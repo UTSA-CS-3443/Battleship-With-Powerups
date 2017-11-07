@@ -1,18 +1,32 @@
 package application;
 	
 import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
+import javafx.stage.*;
+import javafx.scene.*;
 import javafx.scene.layout.BorderPane;
+import javafx.geometry.*;
+import java.util.*;
 
 
 public class Main extends Application {
+	boolean isEnemyTurn = false;
+	boolean inRunning = false;
+	Board player,enemy;
+	int allowedShips = 4;
+	
+	public Parent create() {
+		BorderPane root = new BorderPane();
+		root.setPrefSize(600,800);
+		root.setLeft(new Text("Left Side- Controls and Displays"));
+		
+		
+	}
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Scene scene = new scene(create());
+			primaryStage.setTitle("Boat Wars");
+			primaryStage.setResizable(false);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
