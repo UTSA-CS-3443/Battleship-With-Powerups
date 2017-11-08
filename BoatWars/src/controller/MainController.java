@@ -19,7 +19,7 @@ public class MainController extends Application {
 	boolean isEnemyTurn = false;
 	boolean inRunning = false;
 	Board player,enemy;
-	int allowedShips = 4;
+	int allowedShips = 5;
 	 Random rand = new Random();
 	boolean enemysTurn = false;
 	boolean run = false;
@@ -27,7 +27,7 @@ public class MainController extends Application {
 	public void gameStart() {
 		int num = 5;
 		
-		while(num >= 1) {
+		while(num > 0) {
 			int y = rand.nextInt(10);
 			int x = rand.nextInt(10);
 			if(enemy.placeShip(x,y,new Ship(num, Math.random() < 0.5))) {
@@ -54,7 +54,7 @@ public class MainController extends Application {
 	}
 	public Parent create() {
 		BorderPane root = new BorderPane();
-		root.setPrefSize(600,800);
+		root.setPrefSize(1000,1000);
 		root.setLeft(new Text("Left Side- Controls and Displays"));
 		enemy = new Board( event ->  {
 			if(!run)

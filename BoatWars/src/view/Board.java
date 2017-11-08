@@ -58,7 +58,7 @@ public class Board  extends Parent{
 				if(!ValidPoint(a, y))
 					return false;
 				
-				Cell cell = getCell(a, y);;
+				Cell cell = getCell(a, y);
 				if(cell.ship != null)
 					return false;
 				for(Cell neigh: getNeigh(a,y)) {
@@ -71,6 +71,7 @@ public class Board  extends Parent{
 			}
 		return true;
 		}
+	
 	private Cell[] getNeigh(int x, int y) {
 		Point2D[] points = new Point2D[] {
 					new Point2D(x - 1, y),
@@ -86,6 +87,7 @@ public class Board  extends Parent{
 		}
 		return neigh.toArray(new Cell[0]);
 	}
+	
 	public boolean placeShip(int x, int y, Ship ship) {
 		if(allowPlaceShip(ship,y,x)) {
 			int len = ship.type;
@@ -94,8 +96,8 @@ public class Board  extends Parent{
 					Cell cell = getCell(x, a);
 					cell.ship = ship;
 					if(!enemy) {
-						cell.setFill(Color.GRAY);
-						cell.setStroke(Color.GREEN);
+						cell.setFill(Color.GREEN);
+						cell.setStroke(Color.BLACK);
 					}
 				}
 			}else {
@@ -103,8 +105,8 @@ public class Board  extends Parent{
 					Cell cell = getCell(a, y);
                     cell.ship = ship;
                     if (!enemy) {
-                        cell.setFill(Color.GRAY);
-                        cell.setStroke(Color.GREEN);
+                        cell.setFill(Color.GREEN);
+                        cell.setStroke(Color.BLACK);
 				}
 			}
 		}
@@ -113,7 +115,7 @@ public class Board  extends Parent{
 		return false;
 }
 	private boolean ValidPoint(double x, double y) {
-		if((x >= 0 && x < 10 && y >= 0 && y < 10) == true) {
+		if(x >= 0 && x < 10 && y >= 0 && y < 10) {
 			return true;
 		}else {
 			return false;
