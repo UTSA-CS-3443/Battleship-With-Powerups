@@ -14,7 +14,7 @@ import model.Ship;
 
 public class Board  extends Parent{
 	VBox rows = new VBox();
-	private int numShips = 5;
+	private int numShips = 4;
 	boolean enemy = false;
 	
 	public Board(EventHandler<? super MouseEvent> handler, boolean isEnemy) {
