@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
 import javafx.scene.text.Text;
 import javafx.scene.layout.BorderPane;
@@ -56,9 +57,11 @@ public class MainController extends Application {
 			}
 		}
 	}
-	public Label tutorial(BorderPane root) {
-		Label label = new Label("Left Side-Control and Display");
-		return label;
+	public Text tutorial(BorderPane root) {
+		Text text = new Text("Left Side-Control and Display\n"
+				+ "This works now!\n"
+				+ "Yayyyy!!!!!!!!!!!!\n");
+		return text;
 	}
 	public void setButtons(BorderPane root) {
 		VBox box = new VBox();
