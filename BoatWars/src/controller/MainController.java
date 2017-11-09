@@ -19,13 +19,13 @@ public class MainController extends Application {
 	boolean isEnemyTurn = false;
 	boolean inRunning = false;
 	Board player,enemy;
-	int allowedShips = 5;
+	int allowedShips = 4;
 	 Random rand = new Random();
 	boolean enemysTurn = false;
 	boolean run = false;
 	
 	public void gameStart() {
-		int num = 5;
+		int num = 4;
 		
 		while(num > 0) {
 			int y = rand.nextInt(10);
@@ -74,7 +74,7 @@ public class MainController extends Application {
 				return;
 			
 			Cell c = (Cell)event.getSource();
-			if (player.placeShip(c.y, c.x, new Ship(allowedShips, event.getButton() == MouseButton.PRIMARY)))
+			if (player.placeShip(c.x, c.y, new Ship(allowedShips, event.getButton() == MouseButton.PRIMARY)))
 					if(--allowedShips == 0) {
 						gameStart();
 					}

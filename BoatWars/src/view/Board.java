@@ -89,7 +89,7 @@ public class Board  extends Parent{
 	}
 	
 	public boolean placeShip(int x, int y, Ship ship) {
-		if(allowPlaceShip(ship,y,x)) {
+		if(allowPlaceShip(ship,x,y)) {
 			int len = ship.type;
 			if(ship.isVertical) {
 				for(int a = y; a < y+len; a++) {
