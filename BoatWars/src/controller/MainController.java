@@ -6,6 +6,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseButton;
@@ -55,19 +56,22 @@ public class MainController extends Application {
 			}
 		}
 	}
+	public Label tutorial(BorderPane root) {
+		Label label = new Label("Left Side-Control and Display");
+		return label;
+	}
 	public void setButtons(BorderPane root) {
 		VBox box = new VBox();
 		Button laserButton = new Button("Laser");
 		Button missileButton = new Button("Missile");
 		box.setSpacing(10);
 		box.setPadding(new Insets(10,10,10,10));
-		box.getChildren().addAll(laserButton, missileButton);
+		box.getChildren().addAll(tutorial(root),laserButton, missileButton);
 		root.setLeft(box);
 	}
 	public Parent create() {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(800,800);
-		root.setLeft(new Text("Left Side- Controls and Displays"));
 		setButtons(root);
 		enemy = new Board( event ->  {
 			if(!run)
