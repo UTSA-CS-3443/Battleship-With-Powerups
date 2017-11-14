@@ -19,7 +19,11 @@ import view.Cell;
 import view.Board;
 import model.Ship;
 
-
+/**
+ * Represents the data and the rules that govern this battleship game.
+ * @author Amanda, Joe, Jason, Matt, Erick
+ * @version 1.0
+ */
 public class MainController extends Application {
 	boolean isEnemyTurn = false;
 	boolean inRunning = false;
@@ -28,6 +32,16 @@ public class MainController extends Application {
 	 Random rand = new Random();
 	boolean enemysTurn = false;
 	boolean run = false;
+	boolean victory = false;
+	TextArea info = new TextArea();//added text area
+	
+	private String getDefaultMessage(){//added default message in text area
+		return "The goal of BoatWars(TM) is to sink all of the enemy ships before the enemy sinks yours. Each player takes turns firing at the other players board. If a boat has all of it's squares hit, then it is sunk. The winner is the last player with ship(s) remaining. " + 
+				"To start: \n\n1) Place ships. \nLeft click the board to place a ship vertically or right click the board to place a ship horizontally. Place a total of four ships." +
+				"\n\n2) Select Targets. \nSelect squares on the opponents board to \"hit\" that square. If an enemy's boat was there the cell will be marked red, otherwise white if you missed a boat. If you hit a boat then you can fire again." +
+				"\n\n3) The first player to sink all of the enemy ships wins the game." +
+				"\n-----------------------------------------------------------";
+	}
 	
 	public void gameStart() {
 		int num = 4;
@@ -52,8 +66,10 @@ public class MainController extends Application {
 				continue;
 			enemysTurn = c.takeShot();
 			
-			if(player.getNumShips() == 0) {
+			if(player.getNumShips() == 0 && !victory) {
 				//print loss screen or images
+				info.appendText("You Lose!");
+				this.victory = true;
 			}
 		}
 	}
@@ -67,11 +83,16 @@ public class MainController extends Application {
 		VBox box = new VBox();
 		Button laserButton = new Button("Laser");
 		Button missileButton = new Button("Missile");
+		info.setEditable(false);
+		info.setPrefSize(300, 500);
+		info.setWrapText(true);
+		info.setText(getDefaultMessage());
 		box.setSpacing(10);
 		box.setPadding(new Insets(10,10,10,10));
-		box.getChildren().addAll(tutorial(root),laserButton, missileButton);
+		box.getChildren().addAll(tutorial(root),laserButton, missileButton, info);
 		root.setLeft(box);
 	}
+	
 	public Parent create() {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(800,800);
@@ -83,8 +104,10 @@ public class MainController extends Application {
 			if(c.shot)
 				return;
 			enemysTurn = !c.takeShot();
-			if(enemy.getNumShips() == 0) {
+			if(enemy.getNumShips() == 0 && !victory) {
 				//Win message or picture(s)
+				info.appendText("You Win!");
+				this.victory = true;
 			}
 			if(enemysTurn)
 				enemysMove();
@@ -98,7 +121,7 @@ public class MainController extends Application {
 					if(--allowedShips == 0) {
 						gameStart();
 					}
-	}, false);
+		}, false);
 			
 			VBox vbox = new VBox(50, enemy, player);
 	        vbox.setAlignment(Pos.CENTER);
@@ -106,7 +129,7 @@ public class MainController extends Application {
 	        root.setCenter(vbox);
 
 	        return root;
-}
+	}
 	@Override
 	public void start(Stage primaryStage) {
 		try {

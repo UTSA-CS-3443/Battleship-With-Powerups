@@ -11,7 +11,11 @@ import javafx.geometry.Point2D;
 import view.Cell;
 import java.util.*;
 import model.Ship;
-
+/**
+ * Represents the board for this battleship game.
+ * @author Amanda, Joe, Jason, Matt, Erick
+ * @version 1.0
+ */
 public class Board  extends Parent{
 	VBox rows = new VBox();
 	private int numShips = 4;

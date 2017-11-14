@@ -1,5 +1,9 @@
 package model;
-
+/**
+ * Represents a ship for this battleship game.
+ * @author Amanda, Joe, Jason, Matt, Erick
+ * @version 1.0
+ */
 public class Ship {
 	public boolean isVertical = true;
 	public int type;

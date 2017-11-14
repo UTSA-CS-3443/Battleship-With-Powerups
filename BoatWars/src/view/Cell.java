@@ -3,6 +3,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import view.Board;
 import model.Ship;
+/**
+ * Represents a cell on the board for this battleship game.
+ * @author Amanda, Joe, Jason, Matt, Erick
+ * @version 1.0
+ */
 public class Cell  extends Rectangle{
 	public Ship ship = null;
 	public boolean shot = false;
