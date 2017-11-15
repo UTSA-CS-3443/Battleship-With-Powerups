@@ -46,7 +46,7 @@ public class Cell  extends Rectangle{
 		this.x = x;
 		this.y = y;
 		setFill(Color.CYAN);
-		setStroke(Color.BLACK);
+		setStroke(Color.DARKCYAN);
 	}
 	
 	/**
@@ -55,11 +55,13 @@ public class Cell  extends Rectangle{
 	 */
 	public boolean takeShot() {
 		shot = true;
-		setFill(Color.WHITE);
+		setFill(Color.DARKGRAY);
+		setStroke(Color.DARKCYAN);
 		
 		if(ship != null ) {
 			ship.hit();
 			setFill(Color.DARKRED);
+			setStroke(Color.ORANGERED);
 			if(!ship.alive()) {
 				board.setNumShips(board.getNumShips() - 1);
 			}

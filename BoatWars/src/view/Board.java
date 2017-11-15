@@ -143,8 +143,8 @@ public class Board  extends Parent{
 					Cell cell = getCell(x, a);
 					cell.ship = ship;
 					if(!enemy) {
-						cell.setFill(Color.GREEN);
-						cell.setStroke(Color.BLACK);
+						cell.setFill(Color.BLACK);
+						cell.setStroke(Color.DARKSLATEGRAY);
 					}
 				}
 			}else {
@@ -152,8 +152,8 @@ public class Board  extends Parent{
 					Cell cell = getCell(a, y);
                     cell.ship = ship;
                     if (!enemy) {
-                        cell.setFill(Color.GREEN);
-                        cell.setStroke(Color.BLACK);
+                        cell.setFill(Color.BLACK);
+                        cell.setStroke(Color.DARKSLATEGRAY);
 				}
 			}
 		}

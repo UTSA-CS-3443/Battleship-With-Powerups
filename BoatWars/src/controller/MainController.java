@@ -71,6 +71,32 @@ public class MainController extends Application {
 	TextArea info = new TextArea();//added text area
 	
 	/**
+	 * Restart Button ~ STILL UNFINISHED
+	 */
+	Button restartButton;
+	
+	/**
+	 * An integer value specifying the enemy's turn.
+	 */
+	int enemyTurnNumber = 0;
+	
+	/**
+	 * An integer value specifying the players turn.
+	 */
+	int playerTurnNumber = 0;
+	
+	/**
+	 * A label for enemy board.
+	 */
+	Label enemyLabel = new Label("Enemy - Turn " + enemyTurnNumber);
+	
+	/**
+	 * A label for the player board.
+	 */
+	Label playerLabel = new Label("Player - Turn " + playerTurnNumber);
+	
+	
+	/**
 	 * Sets the default message at the start of this game.
 	 * @return A reference to the default message at the start of this game
 	 */
@@ -107,16 +133,22 @@ public class MainController extends Application {
 			int x = rand.nextInt(10);
 			
 			Cell c = player.getCell(x, y);
-			if(c.shot)
+			if(c.shot){
 				continue;
+			}else{
+				if(!victory){
+					enemyTurnNumber++;
+					enemyLabel.setText("Enemy - Turn " + enemyTurnNumber);
+				}
+			}
 			
 			if(c.takeShot() && !victory){
 				enemysTurn = true;
 				if(!(c.getShip().alive())){
-					info.appendText("\nOne of your Ships have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
+					info.appendText("\nCRITICAL HIT!\n One of your SHIPS have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
 					
 				}else{
-					info.appendText("\nOne of your Ships have been HIT!");
+					info.appendText("\nOne of your SHIPS have been HIT!");
 				}
 			}else{
 				enemysTurn = false;
@@ -147,16 +179,55 @@ public class MainController extends Application {
 	 */
 	public void setButtons(BorderPane root) {
 		VBox box = new VBox();
+		Label label = new Label("Power-Ups:");
+		Label label2 = new Label("Display:");
+		Label label3 = new Label("Menu:");
+		Button scatterBombButton = new Button("Scatter Bomb");
 		Button laserButton = new Button("Laser");
 		Button missileButton = new Button("Missile");
+		Button scoreboardButton = new Button("View Scoreboard");
+		restartButton = new Button("Restart");
+		Button exitButton = new Button("Exit");
+		restartButton.setOnAction( e -> {
+			this.restart();
+		});
+		scoreboardButton.setOnAction( e -> {
+			this.showScoreboard();
+		});
+		exitButton.setOnAction(e ->{
+			this.exit();
+		});
+		
+		info = new TextArea();
 		info.setEditable(false);
 		info.setPrefSize(300, 500);
 		info.setWrapText(true);
 		info.setText(getDefaultMessage());
 		box.setSpacing(10);
 		box.setPadding(new Insets(10,10,10,10));
-		box.getChildren().addAll(tutorial(root),laserButton, missileButton, info);
+		box.getChildren().addAll(label, laserButton, missileButton, scatterBombButton, label2, info, label3, scoreboardButton, restartButton, exitButton);
 		root.setLeft(box);
+	}
+	
+	/**
+	 * Restarts this application.
+	 */
+	public void restart(){
+		//TODO this method
+	}
+	
+	/**
+	 * Displays scoreboard.
+	 */
+	private void showScoreboard(){
+		//TODO this method
+	}
+	
+	/**
+	 * Exits this application.
+	 */
+	private void exit(){
+		//TODO this method
 	}
 	
 	/**
@@ -171,17 +242,22 @@ public class MainController extends Application {
 			if(!run)
 				return;
 			Cell c = (Cell)event.getSource();
-			if(c.shot)
+			if(c.shot){
 				return;
+			}else{
+				if(!victory){
+					playerTurnNumber++;
+					playerLabel.setText("Player - Turn " + playerTurnNumber);
+				}
+			}
 			if(c.takeShot() && !victory){
 				enemysTurn = false;
-				//info.appendText("\nYou hit one of the enemy's Ships!");
 				
 				if(!(c.getShip().alive())){
-					info.appendText("\nCritical Hit! You SUNK one of your enemy's Ships! \n\nYour enemy has " + enemy.getNumShips() + " ship(s) REMAINING!\n");
+					info.appendText("\nCRITICAL HIT!\n You SUNK one of the enemy's SHIPS! \n\nThe enemy has " + enemy.getNumShips() + " ship(s) REMAINING!\n");
 					
 				}else{
-					info.appendText("\nYou HIT one of the enemy's Ships!");
+					info.appendText("\nYou HIT one of the enemy's SHIPS!");
 				}
 				
 			}else{
@@ -205,8 +281,10 @@ public class MainController extends Application {
 						gameStart();
 					}
 		}, false);
+		
 			
-			VBox vbox = new VBox(50, enemy, player);
+			
+			VBox vbox = new VBox(50, enemyLabel, enemy, playerLabel, player);
 	        vbox.setAlignment(Pos.CENTER);
 
 	        root.setCenter(vbox);
@@ -216,7 +294,7 @@ public class MainController extends Application {
 	
 	/**
 	 * Starts this BoatWars application.
-	 * @param primaryStage A reference to the stage for this calculator application
+	 * @param primaryStage A reference to the stage for this BoatWars application
 	 */
 	@Override
 	public void start(Stage primaryStage) {
