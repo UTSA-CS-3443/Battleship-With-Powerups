@@ -17,10 +17,26 @@ import model.Ship;
  * @version 1.0
  */
 public class Board  extends Parent{
+	/**
+	 * Represents the rows on this board
+	 */
 	VBox rows = new VBox();
-	private int numShips = 4;
-	boolean enemy = false;
 	
+	/**
+	 * An integer value specifying the amount of allowed ships.
+	 */
+	private int numShips = 4;
+
+	/**
+	 * An integer value specifying if this board belongs to the enemy, if false it belongs to the player.
+	 */
+	boolean enemy = false;
+
+	/**
+	 * Constructs a board with an event handler, and a boolean value specifying if this board belongs to the enemy.
+	 * @param handler A reference to the mouse handler for this board
+	 * @param isEnemy A boolean value specifying if this board belongs to the enemy
+	 */
 	public Board(EventHandler<? super MouseEvent> handler, boolean isEnemy) {
 		this.enemy = isEnemy;
 		for( int i = 0; i < 10; i++) {
@@ -34,10 +50,24 @@ public class Board  extends Parent{
 		}
 		getChildren().add(rows);
 	}
-	
+
+	/**
+	 * Returns the desired cell.
+	 * @param x An integer value specifying the x coordinate of this cell.
+	 * @param y An integer value specifying the y coordinate of this cell.
+	 * @return A reference to the desired cell
+	 */
 	public Cell getCell(int x, int y) {
 		return (Cell)((HBox)rows.getChildren().get(y)).getChildren().get(x);
 	}
+
+	/**
+	 * Returns a boolean value specifying if a ship is allowed to be placed here.
+	 * @param ship A reference to the ship that is to be placed
+	 * @param x An integer value specifying the x coordinate of a cell
+	 * @param y An integer value specifying the y coordinate of a cell
+	 * @return A boolean value specifying if a ship is allowed to be placed here
+	 */
 	public boolean allowPlaceShip(Ship ship, int x, int y) {
 		int len = ship.type;
 		if(ship.isVertical) {
@@ -75,7 +105,13 @@ public class Board  extends Parent{
 			}
 		return true;
 		}
-	
+
+	/**
+	 * Returns an array of cells containing the neighboring cells of the desired x and y coordinate.
+	 * @param x An integer value specifying the x coordinate of a cell
+	 * @param y An integer value specifying the y coordinate of a cell
+	 * @return An array of cells containing the neighborings of the desired x and y coordinate
+	 */
 	private Cell[] getNeigh(int x, int y) {
 		Point2D[] points = new Point2D[] {
 					new Point2D(x - 1, y),
@@ -91,7 +127,14 @@ public class Board  extends Parent{
 		}
 		return neigh.toArray(new Cell[0]);
 	}
-	
+
+	/**
+	 * Places a ship at the desired location if it is a valid location.
+	 * @param x An integer value specifying the x coordinate of a cell
+	 * @param y An integer value specifying the y coordinate of a cell
+	 * @param ship A reference to the ship that is to be placed
+	 * @return A boolean value specifying if a ship was placed
+	 */
 	public boolean placeShip(int x, int y, Ship ship) {
 		if(allowPlaceShip(ship,x,y)) {
 			int len = ship.type;
@@ -118,6 +161,12 @@ public class Board  extends Parent{
 	}
 		return false;
 }
+	/**
+	 * Returns a boolean value specifying if this is a valid point.
+	 * @param x An integer value specifying the x coordinate of a cell
+	 * @param y An integer value specifying the y coordinate of a cell
+	 * @return A boolean value specifying if this is a valid point
+	 */
 	private boolean ValidPoint(double x, double y) {
 		if(x >= 0 && x < 10 && y >= 0 && y < 10) {
 			return true;
@@ -125,14 +174,28 @@ public class Board  extends Parent{
 			return false;
 		}
 	}
+	
+	/**
+	 * Returns a boolean value specifying if this is a valid 2d point.
+	 * @param point A reference to a 2d point
+	 * @return A boolean value specifying if this is a valid 2d point
+	 */
 	private boolean ValidPoint(Point2D point) {
         return ValidPoint(point.getX(), point.getY());
     }
-
+	
+	/**
+	 * Returns an integer value specifying the number of ships allowed.
+	 * @return An integer value specifying the number of ships allowed
+	 */
 	public int getNumShips() {
 		return numShips;
 	}
-
+	
+	/**
+	 * Changes the number of allowable ships.
+	 * @param numShips An integer value specifying the new number of ships allowed
+	 */
 	public void setNumShips(int numShips) {
 		this.numShips = numShips;
 	}

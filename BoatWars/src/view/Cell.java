@@ -9,12 +9,37 @@ import model.Ship;
  * @version 1.0
  */
 public class Cell  extends Rectangle{
+	/**
+	 * A reference to a ship in this cell, otherwise it is null.
+	 */
 	public Ship ship = null;
+	
+	/**
+	 * A boolean value specifying if this cell has been shot.
+	 */
 	public boolean shot = false;
+	
+	/**
+	 * An integer value specifying the x coordinate of this cell.
+	 */
 	public int x = 0;
+	
+	/**
+	 * An integer value specifying the y coordinate of this cell.
+	 */
 	public int y = 0;
+	
+	/**
+	 * A reference to the board that contains this cell.
+	 */
 	private Board board;
 	
+	/**
+	 * Constructs a cell with a reference to the specified board, and at the specified x and y coordinate
+	 * @param b A reference to the board that contains this cell
+	 * @param x An integer value specifying the x coordinate of this cell
+	 * @param y An integer value specifying the y coordinate of this cell
+	 */
 	public Cell(Board b, int x, int y) {
 		super(30,30);
 		this.board = b;
@@ -24,6 +49,10 @@ public class Cell  extends Rectangle{
 		setStroke(Color.BLACK);
 	}
 	
+	/**
+	 * Takes a shot at a cell, returns true if it contains a ship, false otherwise.
+	 * @return A boolean value specifying if this cell contains a ship
+	 */
 	public boolean takeShot() {
 		shot = true;
 		setFill(Color.WHITE);

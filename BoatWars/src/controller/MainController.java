@@ -25,24 +25,66 @@ import model.Ship;
  * @version 1.0
  */
 public class MainController extends Application {
+	/**
+	 * A boolean value specifying if this turn is the enemy's turn.
+	 */
 	boolean isEnemyTurn = false;
-	boolean inRunning = false;
-	Board player,enemy;
-	int allowedShips = 4;
-	 Random rand = new Random();
-	boolean enemysTurn = false;
+	
+	/**
+	 * If true, the game is currently running. If false, both players are currently placing ships.
+	 */
 	boolean run = false;
+
+	/**
+	 * A reference to the board that the player is using.
+	 */
+	Board player;
+	
+	/**
+	 * A reference to the board that the enemy is using.
+	 */
+	Board enemy;
+
+	/**
+	 * An integer value specifying the amount of allowed ships.
+	 */
+	int allowedShips = 4;
+
+	/**
+	 * A reference to a pseudo-random number generator.
+	 */
+	Random rand = new Random();
+	
+	/**
+	 * A boolean value specifying if it is the enemy's turn.
+	 */
+	boolean enemysTurn = false;
+	
+	/**
+	 * A boolean value specifying if either player has won this game.
+	 */
 	boolean victory = false;
+	
+	/**
+	 * A reference to the text area that displays the desired information.
+	 */
 	TextArea info = new TextArea();//added text area
 	
+	/**
+	 * Sets the default message at the start of this game.
+	 * @return A reference to the default message at the start of this game
+	 */
 	private String getDefaultMessage(){//added default message in text area
 		return "The goal of BoatWars(TM) is to sink all of the enemy ships before the enemy sinks yours. Each player takes turns firing at the other players board. If a boat has all of it's squares hit, then it is sunk. The winner is the last player with ship(s) remaining. " + 
 				"To start: \n\n1) Place ships. \nLeft click the board to place a ship vertically or right click the board to place a ship horizontally. Place a total of four ships." +
 				"\n\n2) Select Targets. \nSelect squares on the opponents board to \"hit\" that square. If an enemy's boat was there the cell will be marked red, otherwise white if you missed a boat. If you hit a boat then you can fire again." +
 				"\n\n3) The first player to sink all of the enemy ships wins the game." +
-				"\n-----------------------------------------------------------";
+				"\n--------------------------------------------------------";
 	}
 	
+	/**
+	 * Starts this game.
+	 */
 	public void gameStart() {
 		int num = 4;
 		
@@ -56,6 +98,9 @@ public class MainController extends Application {
 		run = true;
 	}
 	
+	/**
+	 * Completes the enemy's move.
+	 */
 	private void enemysMove() {
 		while(enemysTurn) {
 			int y = rand.nextInt(10);
@@ -64,21 +109,37 @@ public class MainController extends Application {
 			Cell c = player.getCell(x, y);
 			if(c.shot)
 				continue;
-			enemysTurn = c.takeShot();
 			
+			if(c.takeShot() && !victory){
+				enemysTurn = true;
+				info.appendText("\nThe enemy has hit one of your Ships!\n");
+			}else{
+				enemysTurn = false;
+			}
 			if(player.getNumShips() == 0 && !victory) {
 				//print loss screen or images
-				info.appendText("You Lose!");
+				info.appendText("\n\n\n\t\t\t\tYou Lose!");
 				this.victory = true;
 			}
 		}
 	}
+	
+	/**
+	 * Displays tutorial text.
+	 * @param root A reference to the pane that this component is placed within
+	 * @return The text A reference to the tutorial text
+	 */
 	public Text tutorial(BorderPane root) {
 		Text text = new Text("Left Side-Control and Display\n"
 				+ "This works now!\n"
 				+ "Yayyyy!!!!!!!!!!!!\n");
 		return text;
 	}
+	
+	/**
+	 * Sets up the buttons
+	 * @param root A reference to the pane that this component is placed within
+	 */
 	public void setButtons(BorderPane root) {
 		VBox box = new VBox();
 		Button laserButton = new Button("Laser");
@@ -93,6 +154,10 @@ public class MainController extends Application {
 		root.setLeft(box);
 	}
 	
+	/**
+	 * Creates the BoatWars game.
+	 * @return Returns the pane that this game is component is placed within
+	 */
 	public Parent create() {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(800,800);
@@ -103,10 +168,15 @@ public class MainController extends Application {
 			Cell c = (Cell)event.getSource();
 			if(c.shot)
 				return;
-			enemysTurn = !c.takeShot();
+			if(c.takeShot() && !victory){
+				enemysTurn = false;
+				info.appendText("\nYou hit one of the enemy's Ships!\n");
+			}else{
+				enemysTurn = true;
+			}
 			if(enemy.getNumShips() == 0 && !victory) {
 				//Win message or picture(s)
-				info.appendText("You Win!");
+				info.appendText("\n\n\n\t\t\t\tYou Win!");
 				this.victory = true;
 			}
 			if(enemysTurn)
@@ -130,6 +200,11 @@ public class MainController extends Application {
 
 	        return root;
 	}
+	
+	/**
+	 * Starts this BoatWars application.
+	 * @param primaryStage A reference to the stage for this calculator application
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -143,6 +218,10 @@ public class MainController extends Application {
 		}
 	}
 	
+	/**
+	 * Runs this BoatWars application.
+	 * @param args A reference to command line arguments
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
