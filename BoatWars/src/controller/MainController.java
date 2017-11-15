@@ -112,7 +112,12 @@ public class MainController extends Application {
 			
 			if(c.takeShot() && !victory){
 				enemysTurn = true;
-				info.appendText("\nThe enemy has hit one of your Ships!\n");
+				if(!(c.getShip().alive())){
+					info.appendText("\nOne of your Ships have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
+					
+				}else{
+					info.appendText("\nOne of your Ships have been HIT!");
+				}
 			}else{
 				enemysTurn = false;
 			}
@@ -170,7 +175,15 @@ public class MainController extends Application {
 				return;
 			if(c.takeShot() && !victory){
 				enemysTurn = false;
-				info.appendText("\nYou hit one of the enemy's Ships!\n");
+				//info.appendText("\nYou hit one of the enemy's Ships!");
+				
+				if(!(c.getShip().alive())){
+					info.appendText("\nCritical Hit! You SUNK one of your enemy's Ships! \n\nYour enemy has " + enemy.getNumShips() + " ship(s) REMAINING!\n");
+					
+				}else{
+					info.appendText("\nYou HIT one of the enemy's Ships!");
+				}
+				
 			}else{
 				enemysTurn = true;
 			}

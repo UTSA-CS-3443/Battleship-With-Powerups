@@ -67,4 +67,12 @@ public class Cell  extends Rectangle{
 		}
 		return false;
 	}
+	
+	/**
+	 * Returns a reference to this cell's ship.
+	 * @return A reference to this cell's ship
+	 */
+	public Ship getShip(){
+		return this.ship;
+	}
 }
