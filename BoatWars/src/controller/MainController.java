@@ -175,12 +175,28 @@ public class MainController extends Application {
 		Label label3 = new Label("Menu:");
 		Button scatterBombButton = new Button("Scatter Bomb");
 		scatterBombButton.setOnAction(e-> {ScatterBombButton.scatterBomb();});
+		
 		Button laserButton = new Button("Laser");
 		laserButton.setOnAction(e->{LaserButton.laser();});
+		
 		Button missileButton = new Button("Missile");
 		missileButton.setOnAction(e->{MissileButton.missile();});
+		
+		Button nukeButton = new Button("Nuke"); //9 tiles
+		nukeButton.setOnAction(e->{nukeButton.nuke();});
+		
+		Button singleShotButton = new Button("Single Shot"); //1 Tile
+		singleShotButton.setOnAction(e->{singleShotButton.singleShot();});
+		
+		Button xButton = new Button("X");
+		xButton.setOnAction(e->{xButton.x();});//X pattern
+		
+		Button slashButton = new Button("Slash");
+		slashButton.setOnAction(e->{slashButton.slash();});
+		
 		Button scoreboardButton = new Button("View Scoreboard");
 		restartButton = new Button("Restart");
+		
 		Button exitButton = new Button("Exit");
 		restartButton.setOnAction( e -> {
 			this.restart();
