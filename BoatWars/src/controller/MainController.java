@@ -128,35 +128,37 @@ public class MainController extends Application {
 	 * Completes the enemy's move.
 	 */
 	private void enemysMove() {
-		while(enemysTurn) {
-			int y = rand.nextInt(10);
-			int x = rand.nextInt(10);
-			
-			Cell c = player.getCell(x, y);
-			if(c.shot){
-				continue;
-			}else{
-				if(!victory){
-					enemyTurnNumber++;
-					enemyLabel.setText("Enemy - Turn " + enemyTurnNumber);
-				}
-			}
-			
-			if(c.takeShot() && !victory){
-				enemysTurn = true;
-				if(!(c.getShip().alive())){
-					info.appendText("\nCRITICAL HIT!\n One of your SHIPS have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
-					
+		if(!victory){
+			while(enemysTurn) {
+				int y = rand.nextInt(10);
+				int x = rand.nextInt(10);
+				
+				Cell c = player.getCell(x, y);
+				if(c.shot){
+					continue;
 				}else{
-					info.appendText("\nOne of your SHIPS have been HIT!");
+					if(c.getShip() == null){
+						enemyTurnNumber++;
+						enemyLabel.setText("Enemy - Turn " + enemyTurnNumber);
+					}
 				}
-			}else{
-				enemysTurn = false;
-			}
-			if(player.getNumShips() == 0 && !victory) {
-				//print loss screen or images
-				info.appendText("\n\n\n\t\t\t\tYou Lose!");
-				this.victory = true;
+				
+				if(c.takeShot()){
+					enemysTurn = true;
+					if(!(c.getShip().alive())){
+						info.appendText("\nCRITICAL HIT!\n One of your SHIPS have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
+						
+					}else{
+						info.appendText("\nOne of your SHIPS have been HIT!");
+					}
+				}else{
+					enemysTurn = false;
+				}
+				if(player.getNumShips() == 0) {
+					//print loss screen or images
+					info.appendText("\n\n\n\t\t\t\tYou Lose!");
+					this.victory = true;
+				}
 			}
 		}
 	}
@@ -239,37 +241,39 @@ public class MainController extends Application {
 		root.setPrefSize(800,800);
 		setButtons(root);
 		enemy = new Board( event ->  {
-			if(!run)
-				return;
-			Cell c = (Cell)event.getSource();
-			if(c.shot){
-				return;
-			}else{
-				if(!victory){
-					playerTurnNumber++;
-					playerLabel.setText("Player - Turn " + playerTurnNumber);
+			if(!victory){
+				if(!run)
+					return;
+				Cell c = (Cell)event.getSource();
+				if(c.shot){
+					return;
+				}else{
+					if(c.getShip() == null){
+						playerTurnNumber++;
+						playerLabel.setText("Player - Turn " + playerTurnNumber);
+					}
 				}
-			}
-			if(c.takeShot() && !victory){
-				enemysTurn = false;
-				
-				if(!(c.getShip().alive())){
-					info.appendText("\nCRITICAL HIT!\n You SUNK one of the enemy's SHIPS! \n\nThe enemy has " + enemy.getNumShips() + " ship(s) REMAINING!\n");
+				if(c.takeShot()){
+					enemysTurn = false;
+					
+					if(!(c.getShip().alive())){
+						info.appendText("\nCRITICAL HIT!\n You SUNK one of the enemy's SHIPS! \n\nThe enemy has " + enemy.getNumShips() + " ship(s) REMAINING!\n");
+						
+					}else{
+						info.appendText("\nYou HIT one of the enemy's SHIPS!");
+					}
 					
 				}else{
-					info.appendText("\nYou HIT one of the enemy's SHIPS!");
+					enemysTurn = true;
 				}
-				
-			}else{
-				enemysTurn = true;
+				if(enemy.getNumShips() == 0) {
+					//Win message or picture(s)
+					info.appendText("\n\n\n\t\t\t\tYou Win!");
+					this.victory = true;
+				}
+				if(enemysTurn)
+					enemysMove();
 			}
-			if(enemy.getNumShips() == 0 && !victory) {
-				//Win message or picture(s)
-				info.appendText("\n\n\n\t\t\t\tYou Win!");
-				this.victory = true;
-			}
-			if(enemysTurn)
-				enemysMove();
 		}, true);
 		player = new Board(event ->  {
 			if(run)
