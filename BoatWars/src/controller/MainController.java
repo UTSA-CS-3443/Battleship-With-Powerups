@@ -163,17 +163,6 @@ public class MainController extends Application {
 		}
 	}
 	
-	/**
-	 * Displays tutorial text.
-	 * @param root A reference to the pane that this component is placed within
-	 * @return The text A reference to the tutorial text
-	 */
-	//public Text tutorial(BorderPane root) {
-	//	Text text = new Text("Left Side-Control and Display\n"
-	//			+ "This works now!\n"
-	//			+ "Yayyyy!!!!!!!!!!!!\n");
-	//	return text;
-	//}
 	
 	/**
 	 * Sets up the buttons
