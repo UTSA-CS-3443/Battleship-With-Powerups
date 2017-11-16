@@ -183,16 +183,16 @@ public class MainController extends Application {
 		missileButton.setOnAction(e->{MissileButton.missile();});
 		
 		Button nukeButton = new Button("Nuke"); //9 tiles
-		nukeButton.setOnAction(e->{nukeButton.nuke();});
+		nukeButton.setOnAction(e->{NukeButton.nuke();});
 		
 		Button singleShotButton = new Button("Single Shot"); //1 Tile
-		singleShotButton.setOnAction(e->{singleShotButton.singleShot();});
+		singleShotButton.setOnAction(e->{SingleShotButton.singleShot();});
 		
 		Button xButton = new Button("X");
-		xButton.setOnAction(e->{xButton.x();});//X pattern
+		xButton.setOnAction(e->{XButton.x();});//X pattern
 		
 		Button slashButton = new Button("Slash");
-		slashButton.setOnAction(e->{slashButton.slash();});
+		slashButton.setOnAction(e->{SlashButton.slash();});
 		
 		Button scoreboardButton = new Button("View Scoreboard");
 		restartButton = new Button("Restart");
