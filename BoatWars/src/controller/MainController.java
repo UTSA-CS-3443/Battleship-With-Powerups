@@ -233,6 +233,7 @@ public class MainController extends Application {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(800,800);
 		setButtons(root);
+		//something
 		enemy = new Board( event ->  {
 			if(!victory){
 				if(!run)
