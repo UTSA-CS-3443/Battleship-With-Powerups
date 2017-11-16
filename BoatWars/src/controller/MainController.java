@@ -168,12 +168,12 @@ public class MainController extends Application {
 	 * @param root A reference to the pane that this component is placed within
 	 * @return The text A reference to the tutorial text
 	 */
-	public Text tutorial(BorderPane root) {
-		Text text = new Text("Left Side-Control and Display\n"
-				+ "This works now!\n"
-				+ "Yayyyy!!!!!!!!!!!!\n");
-		return text;
-	}
+	//public Text tutorial(BorderPane root) {
+	//	Text text = new Text("Left Side-Control and Display\n"
+	//			+ "This works now!\n"
+	//			+ "Yayyyy!!!!!!!!!!!!\n");
+	//	return text;
+	//}
 	
 	/**
 	 * Sets up the buttons
@@ -185,8 +185,11 @@ public class MainController extends Application {
 		Label label2 = new Label("Display:");
 		Label label3 = new Label("Menu:");
 		Button scatterBombButton = new Button("Scatter Bomb");
+		scatterBombButton.setOnAction(e-> {ScatterBombButton.scatterBomb();});
 		Button laserButton = new Button("Laser");
+		laserButton.setOnAction(e->{LaserButton.laser();});
 		Button missileButton = new Button("Missile");
+		missileButton.setOnAction(e->{MissileButton.missile();});
 		Button scoreboardButton = new Button("View Scoreboard");
 		restartButton = new Button("Restart");
 		Button exitButton = new Button("Exit");
@@ -216,6 +219,7 @@ public class MainController extends Application {
 	 */
 	public void restart(){
 		//TODO this method
+		
 	}
 	
 	/**
@@ -303,7 +307,7 @@ public class MainController extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			 Scene scene = new Scene(create());
+			Scene scene = new Scene(create());
 			primaryStage.setTitle("Boat Wars");
 			primaryStage.setResizable(false);
 			primaryStage.setScene(scene);
