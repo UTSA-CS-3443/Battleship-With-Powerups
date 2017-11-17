@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.geometry.*;
 import java.util.Random;
@@ -94,6 +95,10 @@ public class MainController extends Application {
 	 * A label for the player board.
 	 */
 	Label playerLabel = new Label("Player - Turn " + playerTurnNumber);
+	
+	boolean laser = false;
+	boolean missile = false;
+	boolean oneShot =  false;
 
 	/**
 	 * Sets the default message at the start of this game.
@@ -186,20 +191,21 @@ public class MainController extends Application {
 		label3.setStyle("-fx-font-weight: bold;");
 		
 		Button scatterBombButton = new Button("Scatter Bomb");
-		// scatterBombButton.setOnAction(e-> {ScatterBombButton.scatterBomb();});
+		//scatterBombButton.setOnAction(e-> {ScatterBombButton.scatterBomb();});
 
 		Button laserButton = new Button("Laser");
-		laserButton.setStyle("-fx-base: #E9967A");
-		// laserButton.setOnAction(e->{LaserButton.laser();});
+		//laserButton.setStyle("-fx-base: #E9967A");
+		laserButton.setOnAction(e->{laser = true; missile = false; oneShot=false;});
 
 		Button missileButton = new Button("Missile");
+		missileButton.setOnAction(e->{laser = false; oneShot = false; missile = true;});
 		// missileButton.setOnAction(e->{MissileButton.missile();});
 
 		Button nukeButton = new Button("Nuke"); // 9 tiles
 		// nukeButton.setOnAction(e->{NukeButton.nuke();});
 
 		Button singleShotButton = new Button("Single Shot"); // 1 Tile
-		// singleShotButton.setOnAction(e->{SingleShotButton.singleShot();});
+		singleShotButton.setOnAction(e->{laser = false; oneShot = true; missile = false;});
 
 		Button xButton = new Button("X");
 		// xButton.setOnAction(e->{XButton.x();});//X pattern
@@ -228,7 +234,7 @@ public class MainController extends Application {
 		info.setText(getDefaultMessage());
 		box.setSpacing(10);
 		box.setPadding(new Insets(10, 10, 10, 10));
-		box.getChildren().addAll(label, laserButton, missileButton, scatterBombButton, label2, info, label3,
+		box.getChildren().addAll(label, laserButton, missileButton, singleShotButton, label2, info, label3,
 				scoreboardButton, restartButton, exitButton);
 		root.setLeft(box);
 	}
@@ -242,7 +248,7 @@ public class MainController extends Application {
 	}
 
 	/**
-	 * Displays scoreboard.
+	 * Displays score board.
 	 */
 	private void showScoreboard() {
 		// TODO this method
@@ -262,7 +268,68 @@ public class MainController extends Application {
 	 * @return Returns the pane that this game is component is placed within
 	 * 
 	 */
-
+	private void display(int sunkShip) {
+		enemysTurn = false;
+		if(sunkShip == 2) {
+			info.appendText("\nCRITICAL HIT!\n You SUNK one of the enemy's SHIPS! \n\nThe enemy has "
+					+ enemy.getNumShips() + " ship(s) REMAINING!\n");
+		}else if (sunkShip == 1) {
+			info.appendText("\nYou HIT one of the enemy's SHIPS!");
+		}
+		else {
+			enemysTurn = true;
+		}
+		playerTurnNumber++;
+		playerLabel.setText("Player - Turn " + playerTurnNumber);
+	}
+	public void shoot(MouseEvent event) {
+		if (!victory) {
+			if (!run)
+				return;
+			Cell c = (Cell) event.getSource();
+			if (c.shot) {
+				return;
+			} //else {
+			//	if (c.getShip() == null) {
+			//		playerTurnNumber++;
+			//		playerLabel.setText("Player - Turn " + playerTurnNumber);
+			//	}
+			//}
+			/*if (c.takeShot()) {
+				enemysTurn = false;
+				if (!(c.getShip().alive())) {
+					info.appendText("\nCRITICAL HIT!\n You SUNK one of the enemy's SHIPS! \n\nThe enemy has "
+							+ enemy.getNumShips() + " ship(s) REMAINING!\n");
+				} else {
+					info.appendText("\nYou HIT one of the enemy's SHIPS!");
+				}
+			} else {
+				enemysTurn = true;
+			}*/
+			if(laser) {
+				display(LaserButton.laser(c.x, c.y, c));
+			}
+			if(oneShot) {
+				display(SingleShotButton.singleShot(c));
+			}
+			if (enemy.getNumShips() == 0) {
+				// Win message or picture(s)
+				info.appendText("\n\n\n\t\t\t\tYou Win!");
+				this.victory = true;
+			}
+			if (enemysTurn)
+				enemysMove();
+		}
+	}
+	public void placeShips(MouseEvent event) {
+		if (run)
+			return;
+		Cell c = (Cell) event.getSource();
+		if (player.placeShip(c.x, c.y, new Ship(allowedShips, event.getButton() == MouseButton.PRIMARY)))
+			if (--allowedShips == 0) {
+				gameStart();
+			}
+	}
 	public Parent create() {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(800, 800);
@@ -271,48 +338,8 @@ public class MainController extends Application {
 		playerLabel.setStyle("-fx-font-weight: bold;");
 		enemyLabel.setTextFill(Color.WHITE);
 		enemyLabel.setStyle("-fx-font-weight: bold;");
-		enemy = new Board(event -> {
-			if (!victory) {
-				if (!run)
-					return;
-				Cell c = (Cell) event.getSource();
-				if (c.shot) {
-					return;
-				} else {
-					if (c.getShip() == null) {
-						playerTurnNumber++;
-						playerLabel.setText("Player - Turn " + playerTurnNumber);
-					}
-				}
-				if (c.takeShot()) {
-					enemysTurn = false;
-					if (!(c.getShip().alive())) {
-						info.appendText("\nCRITICAL HIT!\n You SUNK one of the enemy's SHIPS! \n\nThe enemy has "
-								+ enemy.getNumShips() + " ship(s) REMAINING!\n");
-					} else {
-						info.appendText("\nYou HIT one of the enemy's SHIPS!");
-					}
-				} else {
-					enemysTurn = true;
-				}
-				if (enemy.getNumShips() == 0) {
-					// Win message or picture(s)
-					info.appendText("\n\n\n\t\t\t\tYou Win!");
-					this.victory = true;
-				}
-				if (enemysTurn)
-					enemysMove();
-			}
-		}, true);
-		player = new Board(event -> {
-			if (run)
-				return;
-			Cell c = (Cell) event.getSource();
-			if (player.placeShip(c.x, c.y, new Ship(allowedShips, event.getButton() == MouseButton.PRIMARY)))
-				if (--allowedShips == 0) {
-					gameStart();
-				}
-		}, false);
+		enemy = new Board(event -> {shoot(event);}, true);
+		player = new Board(event -> {placeShips(event);}, false);
 		root.setId("root");
 		VBox vbox = new VBox(10, enemyLabel, enemy, playerLabel, player);
 		vbox.setAlignment(Pos.CENTER);
@@ -320,6 +347,13 @@ public class MainController extends Application {
 		return root;
 	}
 	
+	/**
+	 * 
+	 * Creates the start screen.
+	 * 
+	 * @return Returns the pane that this start screen is placed within
+	 * 
+	 */
 	public Parent startScreen(Stage primaryStage) {
 		BorderPane pane = new BorderPane();
 		pane.setPrefSize(800, 800);

@@ -1,4 +1,5 @@
 package view;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import view.Board;
@@ -48,8 +49,7 @@ public class Cell  extends Rectangle{
 		setFill(Color.CYAN);
 		setStroke(Color.DARKCYAN);
 	}
-	
-	/**
+	/**x
 	 * Takes a shot at a cell, returns true if it contains a ship, false otherwise.
 	 * @return A boolean value specifying if this cell contains a ship
 	 */
@@ -69,7 +69,12 @@ public class Cell  extends Rectangle{
 		}
 		return false;
 	}
-	
+	public Cell topCell(Cell c) {
+		return board.getCell(c.x, c.y-1);
+	}
+	public Cell rightCell(Cell c) {
+		return board.getCell(c.x+1, c.y);
+	}
 	/**
 	 * Returns a reference to this cell's ship.
 	 * @return A reference to this cell's ship
