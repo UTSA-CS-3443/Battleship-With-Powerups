@@ -103,7 +103,7 @@ public class MainController extends Application {
 	private String getDefaultMessage(){//added default message in text area
 		return "The goal of BoatWars(TM) is to sink all of the enemy ships before the enemy sinks yours. Each player takes turns firing at the other players board. If a boat has all of it's squares hit, then it is sunk. The winner is the last player with ship(s) remaining. " + 
 				"To start: \n\n1) Place ships. \nLeft click the board to place a ship vertically or right click the board to place a ship horizontally. Place a total of four ships." +
-				"\n\n2) Select Targets. \nSelect squares on the opponents board to \"hit\" that square. If an enemy's boat was there the cell will be marked red, otherwise white if you missed a boat. If you hit a boat then you can fire again." +
+				"\n\n2) Select Targets. \nSelect squares on the opponents board to \"hit\" that square. If an enemy's boat was there the cell will be marked red, otherwise gray if you missed a boat. If you hit a boat then you can fire again." +
 				"\n\n3) The first player to sink all of the enemy ships wins the game." +
 				"\n--------------------------------------------------------";
 	}
@@ -146,7 +146,7 @@ public class MainController extends Application {
 				if(c.takeShot()){
 					enemysTurn = true;
 					if(!(c.getShip().alive())){
-						info.appendText("\nCRITICAL HIT!\n One of your SHIPS have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
+						info.appendText("\nCRITICAL HIT!\nOne of your SHIPS have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
 						
 					}else{
 						info.appendText("\nOne of your SHIPS have been HIT!");
@@ -154,7 +154,7 @@ public class MainController extends Application {
 				}else{
 					enemysTurn = false;
 				}
-				if(player.getNumShips() == 0) {
+				if(player.getNumShips() == 0 && !victory) {
 					//print loss screen or images
 					info.appendText("\n\n\n\t\t\t\tYou Lose!");
 					this.victory = true;
@@ -257,7 +257,7 @@ public class MainController extends Application {
 					enemysTurn = false;
 					
 					if(!(c.getShip().alive())){
-						info.appendText("\nCRITICAL HIT!\n You SUNK one of the enemy's SHIPS! \n\nThe enemy has " + enemy.getNumShips() + " ship(s) REMAINING!\n");
+						info.appendText("\nCRITICAL HIT!\nYou SUNK one of the enemy's SHIPS! \n\nThe enemy has " + enemy.getNumShips() + " ship(s) REMAINING!\n");
 						
 					}else{
 						info.appendText("\nYou HIT one of the enemy's SHIPS!");
@@ -266,7 +266,7 @@ public class MainController extends Application {
 				}else{
 					enemysTurn = true;
 				}
-				if(enemy.getNumShips() == 0) {
+				if(enemy.getNumShips() == 0 && !victory) {
 					//Win message or picture(s)
 					info.appendText("\n\n\n\t\t\t\tYou Win!");
 					this.victory = true;
@@ -276,14 +276,16 @@ public class MainController extends Application {
 			}
 		}, true);
 		player = new Board(event ->  {
-			if(run)
-				return;
-			
-			Cell c = (Cell)event.getSource();
-			if (player.placeShip(c.x, c.y, new Ship(allowedShips, event.getButton() == MouseButton.PRIMARY)))
-					if(--allowedShips == 0) {
-						gameStart();
-					}
+			if(!victory){
+				if(run)
+					return;
+				
+				Cell c = (Cell)event.getSource();
+				if (player.placeShip(c.x, c.y, new Ship(allowedShips, event.getButton() == MouseButton.PRIMARY)))
+						if(--allowedShips == 0) {
+							gameStart();
+						}
+			}
 		}, false);
 		
 			

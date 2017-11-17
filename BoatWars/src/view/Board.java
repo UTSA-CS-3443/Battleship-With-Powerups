@@ -39,9 +39,9 @@ public class Board  extends Parent{
 	 */
 	public Board(EventHandler<? super MouseEvent> handler, boolean isEnemy) {
 		this.enemy = isEnemy;
-		for( int i = 0; i < 10; i++) {
+		for( int i = 0; i < 10; i++) {//10 is the standard height for battleship
 			HBox row = new HBox();
-			for(int j = 0; j < 10; j++) {
+			for(int j = 0; j < 10; j++) {//10 is the standard length for battleship
 				Cell cell = new Cell(this,j, i);
 				cell.setOnMouseClicked(handler);
 				row.getChildren().add(cell);
@@ -84,7 +84,6 @@ public class Board  extends Parent{
 					
 					if (neigh.ship != null)
 						return false;
-					
 				}
 			}
 		} else {
