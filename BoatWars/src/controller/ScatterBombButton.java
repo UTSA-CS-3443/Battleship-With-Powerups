@@ -3,7 +3,7 @@ package controller;
 import view.Cell;
 
 public class ScatterBombButton {
-	public static int[] scatterBomb(int x ,int y, Cell c) {
+	public static int[] scatterBomb(Cell c) {
 		boolean isValid = true;
 		Cell[] cells = {c.topLeftCell(),c.topRightCell(), c, c.bottomLeftCell(), c.bottomRightCell()};
 		int[] sunkShips = new int[cells.length];//

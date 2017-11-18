@@ -139,12 +139,7 @@ public class MainController extends Application {
 				Cell c = player.getCell(x, y);
 				if (c.shot) {
 					continue;
-				} else {
-					if (c.getShip() == null) {
-						enemyTurnNumber++;
-						enemyLabel.setText("Enemy - Turn " + enemyTurnNumber);
-					}
-				}
+				} 
 
 				if (c.takeShot()) {
 					enemysTurn = true;
@@ -318,7 +313,7 @@ public class MainController extends Application {
 				}else if((c.x + 1 > 10 || c.x - 1 < 0) && !isVertical){
 					return;
 				}
-				display(LaserButton.laser(c.x, c.y, c, isVertical));
+				display(LaserButton.laser(c, isVertical));
 			}
 			if(oneShot) {
 				if (c.shot) {
@@ -330,21 +325,21 @@ public class MainController extends Application {
 				if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
 					return;
 				}
-				display(SlashButton.slash(c.x, c.y, c, isVertical));
+				display(SlashButton.slash(c, isVertical));
 			}
 			
 			if(scatter){
 				if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
 					return;
 				}
-				display(ScatterBombButton.scatterBomb(c.x, c.y, c));
+				display(ScatterBombButton.scatterBomb(c));
 			}
 			
 			if(missile){
 				if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
 					return;
 				}
-				display(MissileButton.missile(c.x, c.y, c));
+				display(MissileButton.missile(c));
 			}
 			if (enemy.getNumShips() == 0) {
 				// Win message or picture(s)

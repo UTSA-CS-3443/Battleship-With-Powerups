@@ -8,8 +8,9 @@ import view.Cell;
  * @version 1.0
  */
 public class LaserButton {
-	public static int[] laser(int x ,int y, Cell c, boolean isVertical) {
-		boolean isValid = true;Cell[] cells = new Cell[3];
+	public static int[] laser(Cell c, boolean isVertical) {
+		boolean isValid = true;
+		Cell[] cells = new Cell[3];
 		int[] sunkShips = new int[cells.length];//
 		//0 = already hit, 1 = hit, 2 = sunk, 3 = miss
 		if(isVertical){

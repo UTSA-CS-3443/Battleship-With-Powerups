@@ -3,7 +3,7 @@ package controller;
 import view.Cell;
 
 public class MissileButton {
-	public static int[] missile(int x ,int y, Cell c) {
+	public static int[] missile(Cell c) {
 		boolean isValid = true;
 		Cell[] cells = {c.topCell(),c.rightCell(), c, c.leftCell(), c.bottomCell()};
 		int[] sunkShips = new int[cells.length];//

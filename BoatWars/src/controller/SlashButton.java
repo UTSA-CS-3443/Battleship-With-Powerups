@@ -3,7 +3,7 @@ package controller;
 import view.Cell;
 
 public class SlashButton {
-	public static int[] slash(int x ,int y, Cell c, boolean isVertical) {
+	public static int[] slash(Cell c, boolean isVertical) {
 		boolean isValid = true;
 		Cell[] cells = new Cell[3];
 		int[] sunkShips = new int[cells.length];//
