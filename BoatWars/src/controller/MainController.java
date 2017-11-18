@@ -72,11 +72,6 @@ public class MainController extends Application {
 	TextArea info = new TextArea();// added text area
 
 	/**
-	 * Restart Button ~ STILL UNFINISHED
-	 */
-	Button restartButton;
-
-	/**
 	 * An integer value specifying the enemy's turn.
 	 */
 	int enemyTurnNumber = 0;
@@ -160,6 +155,8 @@ public class MainController extends Application {
 						info.appendText("\nOne of your SHIPS have been HIT!");
 					}
 				} else {
+					enemyTurnNumber++;
+					enemyLabel.setText("Enemy - Turn " + enemyTurnNumber);
 					enemysTurn = false;
 				}
 				if (player.getNumShips() == 0) {
@@ -217,7 +214,7 @@ public class MainController extends Application {
 		slashButton.setOnAction(e->{laser = false; oneShot = false; missile = false; slash=true; scatter = false;});
 
 		Button scoreboardButton = new Button("View Scoreboard");
-		restartButton = new Button("Restart");
+		Button restartButton = new Button("Restart");
 
 		Button exitButton = new Button("Exit");
 		restartButton.setOnAction(e -> {
