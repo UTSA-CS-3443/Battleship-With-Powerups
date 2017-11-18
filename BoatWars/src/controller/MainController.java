@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.geometry.*;
 import java.util.Random;
@@ -94,6 +95,12 @@ public class MainController extends Application {
 	 * A label for the player board.
 	 */
 	Label playerLabel = new Label("Player - Turn " + playerTurnNumber);
+	
+	boolean laser = false;
+	boolean missile = false;
+	boolean oneShot =  true;
+	boolean slash = false;
+	boolean scatter = false;
 
 	/**
 	 * Sets the default message at the start of this game.
@@ -101,9 +108,9 @@ public class MainController extends Application {
 	 * @return A reference to the default message at the start of this game
 	 */
 	private String getDefaultMessage(){//added default message in text area
-		return "The goal of BoatWars(TM) is to sink all of the enemy ships before the enemy sinks yours. Each player takes turns firing at the other players board. If a boat has all of it's squares hit, then it is sunk. The winner is the last player with ship(s) remaining. " + 
+		return "The goal of BoatWars is to sink all of the enemy ships before the enemy sinks yours. Each player takes turns firing at the other players board. If a boat has all of it's squares hit, then it is sunk. The winner is the last player with ship(s) remaining. " + 
 				"To start: \n\n1) Place ships. \nLeft click the board to place a ship vertically or right click the board to place a ship horizontally. Place a total of four ships." +
-				"\n\n2) Select Targets. \nSelect squares on the opponents board to \"hit\" that square. If an enemy's boat was there the cell will be marked red, otherwise gray if you missed a boat. If you hit a boat then you can fire again." +
+				"\n\n2) Select Targets. \nSelect an attack in the Power-Ups section then select squares on the opponents board to \"hit\" that square. Using the right and left mouse buttons change the direction of your attack. If an enemy's boat was there the cell will be marked red, otherwise gray if you missed a boat. If you hit a boat then you can fire again." +
 				"\n\n3) The first player to sink all of the enemy ships wins the game." +
 				"\n--------------------------------------------------------";
 	}
@@ -185,26 +192,29 @@ public class MainController extends Application {
 		label3.setStyle("-fx-font-weight: bold;");
 		
 		Button scatterBombButton = new Button("Scatter Bomb");
-		// scatterBombButton.setOnAction(e-> {ScatterBombButton.scatterBomb();});
+		//scatterBombButton.setOnAction(e-> {ScatterBombButton.scatterBomb();});
+		scatterBombButton.setOnAction(e->{laser = false; missile = false; oneShot=false; slash=false; scatter = true;});
 
 		Button laserButton = new Button("Laser");
-		laserButton.setStyle("-fx-base: #E9967A");
-		// laserButton.setOnAction(e->{LaserButton.laser();});
+		//laserButton.setStyle("-fx-base: #E9967A");
+		laserButton.setOnAction(e->{laser = true; missile = false; oneShot=false; slash=false; scatter = false;});
 
 		Button missileButton = new Button("Missile");
+		missileButton.setOnAction(e->{laser = false; oneShot = false; missile = true; slash=false; scatter = false;});
 		// missileButton.setOnAction(e->{MissileButton.missile();});
 
 		Button nukeButton = new Button("Nuke"); // 9 tiles
 		// nukeButton.setOnAction(e->{NukeButton.nuke();});
 
 		Button singleShotButton = new Button("Single Shot"); // 1 Tile
-		// singleShotButton.setOnAction(e->{SingleShotButton.singleShot();});
+		singleShotButton.setOnAction(e->{laser = false; oneShot = true; missile = false; slash=false; scatter = false;});
 
 		Button xButton = new Button("X");
 		// xButton.setOnAction(e->{XButton.x();});//X pattern
 
 		Button slashButton = new Button("Slash");
 		// slashButton.setOnAction(e->{SlashButton.slash();});
+		slashButton.setOnAction(e->{laser = false; oneShot = false; missile = false; slash=true; scatter = false;});
 
 		Button scoreboardButton = new Button("View Scoreboard");
 		restartButton = new Button("Restart");
@@ -227,8 +237,8 @@ public class MainController extends Application {
 		info.setText(getDefaultMessage());
 		box.setSpacing(10);
 		box.setPadding(new Insets(10, 10, 10, 10));
-		box.getChildren().addAll(label, singleShotButton, missileButton, scatterBombButton, label2, info, label3,
-				scoreboardButton, restartButton, exitButton);
+		box.getChildren().addAll(label, singleShotButton, missileButton, laserButton, slashButton, scatterBombButton, label2, info, label3,
+				scoreboardButton);
 		root.setLeft(box);
 	}
 
@@ -241,7 +251,7 @@ public class MainController extends Application {
 	}
 
 	/**
-	 * Displays scoreboard.
+	 * Displays score board.
 	 */
 	private void showScoreboard() {
 		// TODO this method
@@ -261,7 +271,103 @@ public class MainController extends Application {
 	 * @return Returns the pane that this game is component is placed within
 	 * 
 	 */
-
+	private void display(int sunkShip) {
+		enemysTurn = false;
+		if(sunkShip == 2) {
+			info.appendText("\nCRITICAL HIT!\n You SUNK one of the enemy's SHIPS! \n\nThe enemy has "
+					+ enemy.getNumShips() + " ship(s) REMAINING!\n");
+		}else if (sunkShip == 1) {
+			info.appendText("\nYou HIT one of the enemy's SHIPS!");
+		}
+		else {
+			enemysTurn = true;
+		}
+	}
+	
+	private void display(int[] sunkShips){
+		//0 = already hit, 1 = hit, 2 = sunk, 3 = miss
+		enemysTurn = true;
+		if(sunkShips[0] == 0 && sunkShips[1] == 0 && sunkShips[2] == 0 ){
+			enemysTurn = false;
+		}
+		for(int i = 0; i < sunkShips.length; i++){
+			if(sunkShips[i] == 2) {
+				enemysTurn = false;
+				info.appendText("\nCRITICAL HIT!\n You SUNK one of the enemy's SHIPS! \n\nThe enemy has "
+						+ enemy.getNumShips() + " ship(s) REMAINING!\n");
+			}else if (sunkShips[i] == 1) {
+				enemysTurn = false;
+				info.appendText("\nYou HIT one of the enemy's SHIPS!");
+			}
+		}
+	}
+	
+	public void shoot(MouseEvent event) {
+		if (!victory) {
+			if (!run)
+				return;
+			Cell c = (Cell) event.getSource();
+			boolean isVertical;
+			if(event.getButton() == MouseButton.PRIMARY){//is vertical
+				isVertical = true;
+			}else{//is horizontal
+				isVertical = false;
+			}
+			if(laser) {
+				if((c.y + 1 > 10 || c.y - 1 < 0) && isVertical){
+					return;
+				}else if((c.x + 1 > 10 || c.x - 1 < 0) && !isVertical){
+					return;
+				}
+				display(LaserButton.laser(c.x, c.y, c, isVertical));
+			}
+			if(oneShot) {
+				if (c.shot) {
+					return;
+				}
+				display(SingleShotButton.singleShot(c));
+			}
+			if(slash){
+				if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+					return;
+				}
+				display(SlashButton.slash(c.x, c.y, c, isVertical));
+			}
+			
+			if(scatter){
+				if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+					return;
+				}
+				display(ScatterBombButton.scatterBomb(c.x, c.y, c));
+			}
+			
+			if(missile){
+				if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+					return;
+				}
+				display(MissileButton.missile(c.x, c.y, c));
+			}
+			if (enemy.getNumShips() == 0) {
+				// Win message or picture(s)
+				info.appendText("\n\n\n\t\t\t\tYou Win!");
+				this.victory = true;
+			}
+			if (enemysTurn)
+				playerTurnNumber++;
+				playerLabel.setText("Player - Turn " + playerTurnNumber);
+				enemysMove();
+		}
+	}
+	
+	public void placeShips(MouseEvent event) {
+		if (run)
+			return;
+		Cell c = (Cell) event.getSource();
+		if (player.placeShip(c.x, c.y, new Ship(allowedShips, event.getButton() == MouseButton.PRIMARY)))
+			if (--allowedShips == 0) {
+				gameStart();
+			}
+	}
 	public Parent create() {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(800, 800);
@@ -270,53 +376,9 @@ public class MainController extends Application {
 		playerLabel.setStyle("-fx-font-weight: bold;");
 		enemyLabel.setTextFill(Color.WHITE);
 		enemyLabel.setStyle("-fx-font-weight: bold;");
-		enemy = new Board(event -> {
-			if (!victory) {
-				if (!run)
-					return;
-				Cell c = (Cell) event.getSource();
-				if (c.shot) {
-					return;
-				} else {
-					if (c.getShip() == null) {
-						playerTurnNumber++;
-						playerLabel.setText("Player - Turn " + playerTurnNumber);
-					}
-				}
-				if (c.takeShot()) {
-					enemysTurn = false;
-					
-					if(!(c.getShip().alive())){
-						info.appendText("\nCRITICAL HIT!\nYou SUNK one of the enemy's SHIPS! \n\nThe enemy has " + enemy.getNumShips() + " ship(s) REMAINING!\n");
-						
-					}else{
 
-						info.appendText("\nYou HIT one of the enemy's SHIPS!");
-					}
-				} else {
-					enemysTurn = true;
-				}
-				if (enemy.getNumShips() == 0) {
-					// Win message or picture(s)
-					info.appendText("\n\n\n\t\t\t\tYou Win!");
-					this.victory = true;
-				}
-				if (enemysTurn)
-					enemysMove();
-			}
-		}, true);
-		player = new Board(event ->  {
-			if(!victory){
-				if(run)
-					return;
-				
-				Cell c = (Cell)event.getSource();
-				if (player.placeShip(c.x, c.y, new Ship(allowedShips, event.getButton() == MouseButton.PRIMARY)))
-						if(--allowedShips == 0) {
-							gameStart();
-						}
-			}
-		}, false);
+		enemy = new Board(event -> {shoot(event);}, true);
+		player = new Board(event -> {placeShips(event);}, false);
 		root.setId("root");
 		VBox vbox = new VBox(10, enemyLabel, enemy, playerLabel, player);
 		vbox.setAlignment(Pos.CENTER);
@@ -324,6 +386,13 @@ public class MainController extends Application {
 		return root;
 	}
 	
+	/**
+	 * 
+	 * Creates the start screen.
+	 * 
+	 * @return Returns the pane that this start screen is placed within
+	 * 
+	 */
 	public Parent startScreen(Stage primaryStage) {
 		BorderPane pane = new BorderPane();
 		pane.setPrefSize(800, 800);

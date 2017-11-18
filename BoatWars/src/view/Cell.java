@@ -1,4 +1,5 @@
 package view;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import view.Board;
@@ -48,8 +49,7 @@ public class Cell  extends Rectangle{
 		setFill(Color.CYAN);
 		setStroke(Color.DARKCYAN);
 	}
-	
-	/**
+	/**x
 	 * Takes a shot at a cell, returns true if it contains a ship, false otherwise.
 	 * @return A boolean value specifying if this cell contains a ship
 	 */
@@ -69,7 +69,72 @@ public class Cell  extends Rectangle{
 		}
 		return false;
 	}
+	public Cell topCell() {
+		if(isValid(x, y - 1)){
+			return board.getCell(x, y-1);
+		}else{
+			return null;
+		}
+	}
 	
+	public Cell topLeftCell(){
+		if(isValid(x - 1, y - 1)){
+			return board.getCell(x - 1, y-1);
+		}else{
+			return null;
+		}
+	}
+	
+	public Cell topRightCell(){
+		if(isValid(x + 1, y - 1)){
+			return board.getCell(x + 1, y-1);
+		}else{
+			return null;
+		}
+	}
+	
+	public Cell rightCell() {
+		if(isValid(x+1, y)){
+			return board.getCell(x+1, y);
+		}else{
+			return null;
+		}
+	}
+	
+	public Cell leftCell(){
+		if(isValid(x-1, y)){
+			return board.getCell(x-1, y);
+		}else{
+			return null;
+		}
+	}
+	public Cell bottomCell(){
+		if(isValid(x, y+1)){
+			return board.getCell(x, y+1);
+		}else{
+			return null;
+		}
+	}
+	
+	public Cell bottomRightCell(){
+		if(isValid(x+1, y+1)){
+			return board.getCell(x+1, y+1);
+		}else{
+			return null;
+		}
+	}
+	
+	public Cell bottomLeftCell(){
+		if(isValid(x-1, y+1)){
+			return board.getCell(x-1, y+1);
+		}else{
+			return null;
+		}
+	}
+	
+	public boolean isValid(int x, int y){
+		return board.isValid(x, y);
+	}
 	/**
 	 * Returns a reference to this cell's ship.
 	 * @return A reference to this cell's ship

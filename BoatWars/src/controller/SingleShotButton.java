@@ -6,9 +6,17 @@ import view.Board;
 import view.Cell;
 
 public class SingleShotButton{
-	private Button button = new Button();
-	public static void singleShot() {
-
+	public static int singleShot(Cell c) {
+		int sunkShip = 0;
+		if (c.takeShot()) {
+			if (!(c.getShip().alive())) {
+				sunkShip=2; // sunk ship
+			}
+			else {
+				sunkShip=1;
+			}
+		}
+		return sunkShip;
 	}
 	
 }

@@ -162,11 +162,19 @@ public class Board  extends Parent{
 }
 	/**
 	 * Returns a boolean value specifying if this is a valid point.
-	 * @param x An integer value specifying the x coordinate of a cell
-	 * @param y An integer value specifying the y coordinate of a cell
+	 * @param x A double value specifying the x coordinate of a cell
+	 * @param y A double value specifying the y coordinate of a cell
 	 * @return A boolean value specifying if this is a valid point
 	 */
 	private boolean ValidPoint(double x, double y) {
+		if(x >= 0 && x < 10 && y >= 0 && y < 10) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public boolean isValid(int x, int y){
 		if(x >= 0 && x < 10 && y >= 0 && y < 10) {
 			return true;
 		}else {
