@@ -1,17 +1,15 @@
 package controller;
-	
+
 import javafx.application.Application;
 import javafx.stage.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
-import javafx.scene.text.Text;
 import javafx.scene.layout.BorderPane;
 import javafx.geometry.*;
 import java.util.Random;
@@ -21,7 +19,8 @@ import model.Ship;
 
 /**
  * Represents the data and the rules that govern this battleship game.
- * @author Amanda, Joe, Jason, Matt, Erick
+ * 
+ * @author Jazmin, Joe, Jason, Matt, Erick
  * @version 1.0
  */
 public class MainController extends Application {
@@ -29,9 +28,10 @@ public class MainController extends Application {
 	 * A boolean value specifying if this turn is the enemy's turn.
 	 */
 	boolean isEnemyTurn = false;
-	
+
 	/**
-	 * If true, the game is currently running. If false, both players are currently placing ships.
+	 * If true, the game is currently running. If false, both players are currently
+	 * placing ships.
 	 */
 	boolean run = false;
 
@@ -39,7 +39,7 @@ public class MainController extends Application {
 	 * A reference to the board that the player is using.
 	 */
 	Board player;
-	
+
 	/**
 	 * A reference to the board that the enemy is using.
 	 */
@@ -54,50 +54,50 @@ public class MainController extends Application {
 	 * A reference to a pseudo-random number generator.
 	 */
 	Random rand = new Random();
-	
+
 	/**
 	 * A boolean value specifying if it is the enemy's turn.
 	 */
 	boolean enemysTurn = false;
-	
+
 	/**
 	 * A boolean value specifying if either player has won this game.
 	 */
 	boolean victory = false;
-	
+
 	/**
 	 * A reference to the text area that displays the desired information.
 	 */
-	TextArea info = new TextArea();//added text area
-	
+	TextArea info = new TextArea();// added text area
+
 	/**
 	 * Restart Button ~ STILL UNFINISHED
 	 */
 	Button restartButton;
-	
+
 	/**
 	 * An integer value specifying the enemy's turn.
 	 */
 	int enemyTurnNumber = 0;
-	
+
 	/**
 	 * An integer value specifying the players turn.
 	 */
 	int playerTurnNumber = 0;
-	
+
 	/**
 	 * A label for enemy board.
 	 */
 	Label enemyLabel = new Label("Enemy - Turn " + enemyTurnNumber);
-	
+
 	/**
 	 * A label for the player board.
 	 */
 	Label playerLabel = new Label("Player - Turn " + playerTurnNumber);
-	
-	
+
 	/**
 	 * Sets the default message at the start of this game.
+	 * 
 	 * @return A reference to the default message at the start of this game
 	 */
 	private String getDefaultMessage(){//added default message in text area
@@ -107,43 +107,44 @@ public class MainController extends Application {
 				"\n\n3) The first player to sink all of the enemy ships wins the game." +
 				"\n--------------------------------------------------------";
 	}
-	
+
 	/**
 	 * Starts this game.
 	 */
 	public void gameStart() {
 		int num = 4;
-		
-		while(num > 0) {
+
+		while (num > 0) {
 			int y = rand.nextInt(10);
 			int x = rand.nextInt(10);
-			if(enemy.placeShip(x,y,new Ship(num, Math.random() < 0.5))) {
+			if (enemy.placeShip(x, y, new Ship(num, Math.random() < 0.5))) {
 				num--;
 			}
 		}
 		run = true;
 	}
-	
+
 	/**
 	 * Completes the enemy's move.
+	 * @throws InterruptedException 
 	 */
-	private void enemysMove() {
-		if(!victory){
-			while(enemysTurn) {
+	private void enemysMove(){
+		if (!victory) {
+			while (enemysTurn) {
 				int y = rand.nextInt(10);
 				int x = rand.nextInt(10);
-				
+
 				Cell c = player.getCell(x, y);
-				if(c.shot){
+				if (c.shot) {
 					continue;
-				}else{
-					if(c.getShip() == null){
+				} else {
+					if (c.getShip() == null) {
 						enemyTurnNumber++;
 						enemyLabel.setText("Enemy - Turn " + enemyTurnNumber);
 					}
 				}
-				
-				if(c.takeShot()){
+
+				if (c.takeShot()) {
 					enemysTurn = true;
 					if(!(c.getShip().alive())){
 						info.appendText("\nCRITICAL HIT!\nOne of your SHIPS have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
@@ -151,127 +152,156 @@ public class MainController extends Application {
 					}else{
 						info.appendText("\nOne of your SHIPS have been HIT!");
 					}
-				}else{
+				} else {
 					enemysTurn = false;
 				}
-				if(player.getNumShips() == 0 && !victory) {
-					//print loss screen or images
+				if (player.getNumShips() == 0) {
+					// print loss screen or images
 					info.appendText("\n\n\n\t\t\t\tYou Lose!");
 					this.victory = true;
 				}
 			}
 		}
 	}
-	
-	/**
-	 * Displays tutorial text.
-	 * @param root A reference to the pane that this component is placed within
-	 * @return The text A reference to the tutorial text
-	 */
-	public Text tutorial(BorderPane root) {
-		Text text = new Text("Left Side-Control and Display\n"
-				+ "This works now!\n"
-				+ "Yayyyy!!!!!!!!!!!!\n");
-		return text;
-	}
-	
+
 	/**
 	 * Sets up the buttons
-	 * @param root A reference to the pane that this component is placed within
+	 * 
+	 * @param root
+	 *            A reference to the pane that this component is placed within
 	 */
 	public void setButtons(BorderPane root) {
 		VBox box = new VBox();
 		Label label = new Label("Power-Ups:");
+		label.setTextFill(Color.WHITE);
+		label.setStyle("-fx-font-weight: bold;");
+
 		Label label2 = new Label("Display:");
+		label2.setTextFill(Color.WHITE);
+		label2.setStyle("-fx-font-weight: bold;");
+		
 		Label label3 = new Label("Menu:");
+		label3.setTextFill(Color.WHITE);
+		label3.setStyle("-fx-font-weight: bold;");
+		
 		Button scatterBombButton = new Button("Scatter Bomb");
+		// scatterBombButton.setOnAction(e-> {ScatterBombButton.scatterBomb();});
+
 		Button laserButton = new Button("Laser");
+		laserButton.setStyle("-fx-base: #E9967A");
+		// laserButton.setOnAction(e->{LaserButton.laser();});
+
 		Button missileButton = new Button("Missile");
+		// missileButton.setOnAction(e->{MissileButton.missile();});
+
+		Button nukeButton = new Button("Nuke"); // 9 tiles
+		// nukeButton.setOnAction(e->{NukeButton.nuke();});
+
+		Button singleShotButton = new Button("Single Shot"); // 1 Tile
+		// singleShotButton.setOnAction(e->{SingleShotButton.singleShot();});
+
+		Button xButton = new Button("X");
+		// xButton.setOnAction(e->{XButton.x();});//X pattern
+
+		Button slashButton = new Button("Slash");
+		// slashButton.setOnAction(e->{SlashButton.slash();});
+
 		Button scoreboardButton = new Button("View Scoreboard");
 		restartButton = new Button("Restart");
+
 		Button exitButton = new Button("Exit");
-		restartButton.setOnAction( e -> {
+		restartButton.setOnAction(e -> {
 			this.restart();
 		});
-		scoreboardButton.setOnAction( e -> {
+		scoreboardButton.setOnAction(e -> {
 			this.showScoreboard();
 		});
-		exitButton.setOnAction(e ->{
+		exitButton.setOnAction(e -> {
 			this.exit();
 		});
-		
+
 		info = new TextArea();
 		info.setEditable(false);
 		info.setPrefSize(300, 500);
 		info.setWrapText(true);
 		info.setText(getDefaultMessage());
 		box.setSpacing(10);
-		box.setPadding(new Insets(10,10,10,10));
-		box.getChildren().addAll(label, laserButton, missileButton, scatterBombButton, label2, info, label3, scoreboardButton, restartButton, exitButton);
+		box.setPadding(new Insets(10, 10, 10, 10));
+		box.getChildren().addAll(label, singleShotButton, missileButton, scatterBombButton, label2, info, label3,
+				scoreboardButton, restartButton, exitButton);
 		root.setLeft(box);
 	}
-	
+
 	/**
 	 * Restarts this application.
 	 */
-	public void restart(){
-		//TODO this method
+	public void restart() {
+		// TODO this method
+
 	}
-	
+
 	/**
 	 * Displays scoreboard.
 	 */
-	private void showScoreboard(){
-		//TODO this method
+	private void showScoreboard() {
+		// TODO this method
 	}
-	
+
 	/**
 	 * Exits this application.
 	 */
-	private void exit(){
-		//TODO this method
+	private void exit() {
+		// TODO this method
 	}
-	
+
 	/**
+	 * 
 	 * Creates the BoatWars game.
+	 * 
 	 * @return Returns the pane that this game is component is placed within
+	 * 
 	 */
+
 	public Parent create() {
 		BorderPane root = new BorderPane();
-		root.setPrefSize(800,800);
+		root.setPrefSize(800, 800);
 		setButtons(root);
-		enemy = new Board( event ->  {
-			if(!victory){
-				if(!run)
+		playerLabel.setTextFill(Color.WHITE);
+		playerLabel.setStyle("-fx-font-weight: bold;");
+		enemyLabel.setTextFill(Color.WHITE);
+		enemyLabel.setStyle("-fx-font-weight: bold;");
+		enemy = new Board(event -> {
+			if (!victory) {
+				if (!run)
 					return;
-				Cell c = (Cell)event.getSource();
-				if(c.shot){
+				Cell c = (Cell) event.getSource();
+				if (c.shot) {
 					return;
-				}else{
-					if(c.getShip() == null){
+				} else {
+					if (c.getShip() == null) {
 						playerTurnNumber++;
 						playerLabel.setText("Player - Turn " + playerTurnNumber);
 					}
 				}
-				if(c.takeShot()){
+				if (c.takeShot()) {
 					enemysTurn = false;
 					
 					if(!(c.getShip().alive())){
 						info.appendText("\nCRITICAL HIT!\nYou SUNK one of the enemy's SHIPS! \n\nThe enemy has " + enemy.getNumShips() + " ship(s) REMAINING!\n");
 						
 					}else{
+
 						info.appendText("\nYou HIT one of the enemy's SHIPS!");
 					}
-					
-				}else{
+				} else {
 					enemysTurn = true;
 				}
-				if(enemy.getNumShips() == 0 && !victory) {
-					//Win message or picture(s)
+				if (enemy.getNumShips() == 0) {
+					// Win message or picture(s)
 					info.appendText("\n\n\n\t\t\t\tYou Win!");
 					this.victory = true;
 				}
-				if(enemysTurn)
+				if (enemysTurn)
 					enemysMove();
 			}
 		}, true);
@@ -287,37 +317,56 @@ public class MainController extends Application {
 						}
 			}
 		}, false);
-		
-			
-			
-			VBox vbox = new VBox(50, enemyLabel, enemy, playerLabel, player);
-	        vbox.setAlignment(Pos.CENTER);
-
-	        root.setCenter(vbox);
-
-	        return root;
+		root.setId("root");
+		VBox vbox = new VBox(10, enemyLabel, enemy, playerLabel, player);
+		vbox.setAlignment(Pos.CENTER);
+		root.setCenter(vbox);
+		return root;
 	}
 	
+	public Parent startScreen(Stage primaryStage) {
+		BorderPane pane = new BorderPane();
+		pane.setPrefSize(800, 800);
+		pane.setId("pane");
+		Button button = new Button("START");
+		button.setStyle("-fx-font-weight: bold;");
+		button.setOnAction(e-> {
+			Scene scene = new Scene(create());
+			scene.getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
+			primaryStage.setScene(scene);
+		});
+		pane.setCenter(button);
+		return pane;
+	}
 	/**
+	 * 
 	 * Starts this BoatWars application.
-	 * @param primaryStage A reference to the stage for this BoatWars application
+	 * 
+	 * @param primaryStage
+	 *            A reference to the stage for this BoatWars application
+	 * 
 	 */
 	@Override
+
 	public void start(Stage primaryStage) {
 		try {
-			 Scene scene = new Scene(create());
 			primaryStage.setTitle("Boat Wars");
 			primaryStage.setResizable(false);
+			Scene scene = new Scene(startScreen(primaryStage));
+			scene.getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
+			//Scene scene = new Scene(create());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Runs this BoatWars application.
-	 * @param args A reference to command line arguments
+	 * 
+	 * @param args
+	 *            A reference to command line arguments
 	 */
 	public static void main(String[] args) {
 		launch(args);
