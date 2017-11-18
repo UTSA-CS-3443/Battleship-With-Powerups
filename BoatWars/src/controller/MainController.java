@@ -286,9 +286,11 @@ public class MainController extends Application {
 	
 	private void display(int[] sunkShips){
 		//0 = already hit, 1 = hit, 2 = sunk, 3 = miss
-		enemysTurn = true;
-		if(sunkShips[0] == 0 && sunkShips[1] == 0 && sunkShips[2] == 0 ){
-			enemysTurn = false;
+		enemysTurn = false;
+		for(int i = 0; i < sunkShips.length; i++){
+			if(sunkShips[i] > 0){
+				enemysTurn = true;
+			}
 		}
 		for(int i = 0; i < sunkShips.length; i++){
 			if(sunkShips[i] == 2) {
