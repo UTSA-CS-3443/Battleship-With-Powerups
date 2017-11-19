@@ -23,8 +23,8 @@ public class LaserButton {
 			cells[2] =c.rightCell();
 		}
 		for(int i = 0; i < cells.length; i++){
+			sunkShips[i] = 0;
 			if(cells[i] == null){
-				sunkShips[i] = 0;
 				isValid = false;
 			}
 		}

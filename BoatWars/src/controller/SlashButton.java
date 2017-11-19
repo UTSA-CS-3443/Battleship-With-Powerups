@@ -18,8 +18,8 @@ public class SlashButton {
 			cells[2] =c.bottomLeftCell();
 		}
 		for(int i = 0; i < cells.length; i++){
+			sunkShips[i] = 0;
 			if(cells[i] == null){
-				sunkShips[i] = 0;
 				isValid = false;
 			}
 		}

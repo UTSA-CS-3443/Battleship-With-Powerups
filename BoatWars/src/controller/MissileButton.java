@@ -9,8 +9,8 @@ public class MissileButton {
 		int[] sunkShips = new int[cells.length];//
 		//0 = already hit, 1 = hit, 2 = sunk, 3 = miss
 		for(int i = 0; i < cells.length; i++){
+			sunkShips[i] = 0;
 			if(cells[i] == null){
-				sunkShips[i] = 0;
 				isValid = false;
 			}
 		}
