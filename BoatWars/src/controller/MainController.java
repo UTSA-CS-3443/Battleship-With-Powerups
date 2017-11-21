@@ -12,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.geometry.*;
 import java.util.Random;
 import view.Cell;
@@ -301,6 +302,11 @@ public class MainController extends Application {
 	 */
 	public void setButtons(BorderPane root, Stage primaryStage) {
 		VBox box = new VBox();
+		HBox row1 = new HBox(10);
+		HBox row2 = new HBox(10);
+		HBox row3 = new HBox(10);
+		HBox row4 = new HBox(10);
+		HBox row5 = new HBox(10);
 		Label label = new Label("Power-Ups:");
 		label.setTextFill(Color.WHITE);
 		label.setStyle("-fx-font-weight: bold;");
@@ -353,7 +359,18 @@ public class MainController extends Application {
 		exitButton.setOnAction(e -> {
 			this.exit(primaryStage);
 		});
-
+		row1.getChildren().add(singleShotButton);
+		row1.getChildren().add(missileButton);
+		row2.getChildren().add(laserButton);
+		row2.getChildren().add(slashButton);
+		row3.getChildren().add(scatterBombButton);
+		row3.getChildren().add(xButton);
+		row4.getChildren().add(donutButton);
+		row4.getChildren().add(nukeButton);
+		row5.getChildren().add(scoreboardButton);
+		row5.getChildren().add(restartButton);
+		row5.getChildren().add(exitButton);
+		
 		info = new TextArea();
 		info.setEditable(false);
 		info.setPrefSize(300, 500);
@@ -361,8 +378,7 @@ public class MainController extends Application {
 		info.setText(getDefaultMessage());
 		box.setSpacing(10);
 		box.setPadding(new Insets(10, 10, 10, 10));
-		box.getChildren().addAll(label, singleShotButton, missileButton, laserButton, slashButton, scatterBombButton, xButton, nukeButton, donutButton, label2, info, label3, exitButton,
-				scoreboardButton);
+		box.getChildren().addAll(label, row1, row2, row3, row4, label2, info, label3, row5);
 		root.setLeft(box);
 	}
 
