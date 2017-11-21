@@ -20,6 +20,7 @@ import model.Ship;
 
 /**
  * Represents the data and the rules that govern this battleship game.
+ * @author Miguel Perez
  * @author Jasmin
  * @author Joe
  * @author Jason McDonald
@@ -113,11 +114,26 @@ public class MainController extends Application {
 	 * A boolean value specifying if the slash button is toggled.
 	 */
 	boolean slash = false;
-
+	
 	/**
 	 * A boolean value specifying if the scatter bomb button is toggled.
 	 */
 	boolean scatter = false;
+
+	/**
+	 * A boolean value specifying if the nuke button is toggled.
+	 */
+	boolean nuke = false;
+
+	/**
+	 * A boolean value specifying if the x button is toggled.
+	 */
+	boolean xBomb = false;
+
+	/**
+	 * A boolean value specifying if the donut button is toggled.
+	 */
+	boolean donut = false;
 
 	/**
 	 * Sets the default message at the start of this game.
@@ -160,9 +176,6 @@ public class MainController extends Application {
 				boolean isVertical = true;
 				
 				Cell c = player.getCell(x, y);
-//				if (c.shot) {
-//					continue;
-//				} 
 				if(laser) {
 					if((c.y + 1 > 10 || c.y - 1 < 0) && isVertical){
 						continue;
@@ -205,6 +218,28 @@ public class MainController extends Application {
 					enemyDisplay(MissileButton.missile(c));
 				}
 				
+				if(nuke){
+					if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+						continue;
+					}
+					System.out.println("nuke" + enemyTurnNumber);
+					enemyDisplay(NukeButton.nuke(c));
+				}
+				
+				if(xBomb){
+					if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+						continue;
+					}
+					System.out.println("xBomb" + enemyTurnNumber);
+					enemyDisplay(XButton.x(c));
+				}
+				if(donut){
+					if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+						continue;
+					}
+					System.out.println("Donut" + enemyTurnNumber);
+					enemyDisplay(DonutButton.donut(c));
+				}
 				if (player.getNumShips() == 0 && !victory) {
 					// print loss screen or images
 					info.appendText("\n\n\n\t\t\t\tYou Lose!");
@@ -264,7 +299,7 @@ public class MainController extends Application {
 	 * 
 	 * @param root A reference to the pane that this component is placed within
 	 */
-	public void setButtons(BorderPane root) {
+	public void setButtons(BorderPane root, Stage primaryStage) {
 		VBox box = new VBox();
 		Label label = new Label("Power-Ups:");
 		label.setTextFill(Color.WHITE);
@@ -280,29 +315,31 @@ public class MainController extends Application {
 		
 		Button scatterBombButton = new Button("Scatter Bomb");
 		//scatterBombButton.setOnAction(e-> {ScatterBombButton.scatterBomb();});
-		scatterBombButton.setOnAction(e->{laser = false; missile = false; oneShot=false; slash=false; scatter = true;});
+		scatterBombButton.setOnAction(e->{laser = false; missile = false; oneShot=false; slash=false; scatter = true; nuke = false; xBomb = false; donut = false;});
 
 		Button laserButton = new Button("Laser");
 		//laserButton.setStyle("-fx-base: #E9967A");
-		laserButton.setOnAction(e->{laser = true; missile = false; oneShot=false; slash=false; scatter = false;});
+		laserButton.setOnAction(e->{laser = true; missile = false; oneShot=false; slash=false; scatter = false; nuke = false; xBomb = false; donut = false;});
 
 		Button missileButton = new Button("Missile");
-		missileButton.setOnAction(e->{laser = false; oneShot = false; missile = true; slash=false; scatter = false;});
+		missileButton.setOnAction(e->{laser = false; oneShot = false; missile = true; slash=false; scatter = false; nuke = false; xBomb = false; donut = false;});
 		// missileButton.setOnAction(e->{MissileButton.missile();});
 
 		Button nukeButton = new Button("Nuke"); // 9 tiles
-		// nukeButton.setOnAction(e->{NukeButton.nuke();});
+		nukeButton.setOnAction(e->{laser = false; oneShot = false; missile = false; slash=false; scatter = false; nuke = true; xBomb = false; donut = false;});
 
 		Button singleShotButton = new Button("Single Shot"); // 1 Tile
-		singleShotButton.setOnAction(e->{laser = false; oneShot = true; missile = false; slash=false; scatter = false;});
+		singleShotButton.setOnAction(e->{laser = false; oneShot = true; missile = false; slash=false; scatter = false; nuke = false; xBomb = false; donut = false;});
 
 		Button xButton = new Button("X");
-		// xButton.setOnAction(e->{XButton.x();});//X pattern
+		xButton.setOnAction(e->{laser = false; oneShot = false; missile = false; slash=false; scatter = false; nuke = false; xBomb = true; donut = false;});//X pattern
 
 		Button slashButton = new Button("Slash");
-		// slashButton.setOnAction(e->{SlashButton.slash();});
-		slashButton.setOnAction(e->{laser = false; oneShot = false; missile = false; slash=true; scatter = false;});
+		slashButton.setOnAction(e->{laser = false; oneShot = false; missile = false; slash=true; scatter = false; nuke = false; xBomb = false; donut = false;});
 
+		Button donutButton = new Button("Donut");
+		donutButton.setOnAction(e->{laser = false; oneShot = false; missile = false; slash= false; scatter = false; nuke = false; xBomb = false; donut = true;});
+		
 		Button scoreboardButton = new Button("View Scoreboard");
 		Button restartButton = new Button("Restart");
 
@@ -314,7 +351,7 @@ public class MainController extends Application {
 			this.showScoreboard();
 		});
 		exitButton.setOnAction(e -> {
-			this.exit();
+			this.exit(primaryStage);
 		});
 
 		info = new TextArea();
@@ -324,7 +361,7 @@ public class MainController extends Application {
 		info.setText(getDefaultMessage());
 		box.setSpacing(10);
 		box.setPadding(new Insets(10, 10, 10, 10));
-		box.getChildren().addAll(label, singleShotButton, missileButton, laserButton, slashButton, scatterBombButton, label2, info, label3,
+		box.getChildren().addAll(label, singleShotButton, missileButton, laserButton, slashButton, scatterBombButton, xButton, nukeButton, donutButton, label2, info, label3, exitButton,
 				scoreboardButton);
 		root.setLeft(box);
 	}
@@ -347,8 +384,9 @@ public class MainController extends Application {
 	/**
 	 * Exits this application.
 	 */
-	private void exit() {
-		// TODO this method
+	private void exit(Stage primaryStage) {
+		primaryStage.close();
+	
 	}
 
 	/**
@@ -441,6 +479,24 @@ public class MainController extends Application {
 				}
 				display(MissileButton.missile(c));
 			}
+			if(nuke){
+				if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+					return;
+				}
+				display(NukeButton.nuke(c));
+			}
+			if(xBomb){
+				if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+					return;
+				}
+				display(XButton.x(c));
+			}
+			if(donut){
+				if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+					return;
+				}
+				display(DonutButton.donut(c));
+			}
 			if (enemy.getNumShips() == 0) {
 				// Win message or picture(s)
 				info.appendText("\n\n\n\t\t\t\tYou Win!");
@@ -471,10 +527,11 @@ public class MainController extends Application {
 	 * Creates this Boat wars game.
 	 * @return A reference to the parent root for this application
 	 */
-	public Parent create() {
+
+	public Parent create(Stage primaryStage) {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(800, 800);
-		setButtons(root);
+		setButtons(root, primaryStage);
 		playerLabel.setTextFill(Color.WHITE);
 		playerLabel.setStyle("-fx-font-weight: bold;");
 		enemyLabel.setTextFill(Color.WHITE);
@@ -503,7 +560,7 @@ public class MainController extends Application {
 		Button button = new Button("START");
 		button.setStyle("-fx-font-weight: bold;");
 		button.setOnAction(e-> {
-			Scene scene = new Scene(create());
+			Scene scene = new Scene(create(primaryStage));
 			scene.getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 		});

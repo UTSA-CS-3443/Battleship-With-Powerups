@@ -1,6 +1,7 @@
 package model;
 /**
  * Represents a ship for this battleship game.
+ * @author Miguel Perez
  * @author Jasmin
  * @author Joe
  * @author Jason McDonald

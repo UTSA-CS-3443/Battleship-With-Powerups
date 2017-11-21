@@ -3,6 +3,7 @@ package controller;
 import view.Cell;
 /**
  * Represents a missile button.
+ * @author Miguel Perez
  * @author Jasmin
  * @author Joe
  * @author Jason McDonald

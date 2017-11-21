@@ -13,6 +13,7 @@ import java.util.*;
 import model.Ship;
 /**
  * Represents the board for this battleship game.
+ * @author Miguel Perez
  * @author Jasmin
  * @author Joe
  * @author Jason McDonald

@@ -11,27 +11,17 @@ import view.Cell;
  * @author Erick Flores
  * @version 1.0
  */
-public class SlashButton {
+public class DonutButton {
 	/**
-	 * Shoots the board with a slash bomb.
+	 * Shoots the board with a donut bomb.
 	 * @param c A reference to the initial cell to be shot
-	 * @param isVertical A boolean value specifying if this slash is vertically or horizontally oriented
 	 * @return A reference to an integer array specifying which cells were already hit, hit, sunk, or missed.
 	 */
-	public static int[] slash(Cell c, boolean isVertical) {
+	public static int[] donut(Cell c) {
 		boolean isValid = true;
-		Cell[] cells = new Cell[3];
+		Cell[] cells = {c.topCell(), c.rightCell(), c.leftCell(), c.bottomCell(), c.topRightCell(), c.topLeftCell(), c.bottomLeftCell(), c.bottomRightCell()};
 		int[] sunkShips = new int[cells.length];//
 		//0 = already hit, 1 = hit, 2 = sunk, 3 = miss
-		if(isVertical){
-			cells[0] =c.topLeftCell();
-			cells[1] =c;
-			cells[2] =c.bottomRightCell();
-		}else{
-			cells[0] =c.topRightCell();
-			cells[1] =c;
-			cells[2] =c.bottomLeftCell();
-		}
 		for(int i = 0; i < cells.length; i++){
 			sunkShips[i] = 0;
 			if(cells[i] == null){
@@ -54,7 +44,6 @@ public class SlashButton {
 				}
 			}
 		}
-		
-		return sunkShips;	
+		return sunkShips;
 	}
 }

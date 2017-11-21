@@ -3,6 +3,7 @@ package controller;
 import view.Cell;
 /**
  * Represents a scatter bomb button.
+ * @author Miguel Perez
  * @author Jasmin
  * @author Joe
  * @author Jason McDonald
@@ -18,7 +19,7 @@ public class ScatterBombButton {
 	 */
 	public static int[] scatterBomb(Cell c) {
 		boolean isValid = true;
-		Cell[] cells = {c.topLeftCell(),c.topRightCell(), c, c.bottomLeftCell(), c.bottomRightCell()};
+		Cell[] cells = {c.topLeftCell(),c.topRightCell(), c.bottomLeftCell(), c.bottomRightCell()};
 		int[] sunkShips = new int[cells.length];//
 		//0 = already hit, 1 = hit, 2 = sunk, 3 = miss
 		for(int i = 0; i < cells.length; i++){
