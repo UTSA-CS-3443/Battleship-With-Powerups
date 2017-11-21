@@ -2,10 +2,10 @@ package controller;
 
 import view.Cell;
 
-public class NukeButton {
-	public static int[] nuke(Cell c) {
+public class DonutButton {
+	public static int[] donut(Cell c) {
 		boolean isValid = true;
-		Cell[] cells = {c, c.topCell(),c.rightCell(), c.leftCell(), c.bottomCell(), c.topRightCell(), c.topLeftCell(), c.bottomLeftCell(), c.bottomRightCell()};
+		Cell[] cells = {c.topCell(), c.rightCell(), c.leftCell(), c.bottomCell(), c.topRightCell(), c.topLeftCell(), c.bottomLeftCell(), c.bottomRightCell()};
 		int[] sunkShips = new int[cells.length];//
 		//0 = already hit, 1 = hit, 2 = sunk, 3 = miss
 		for(int i = 0; i < cells.length; i++){
