@@ -13,7 +13,11 @@ import java.util.*;
 import model.Ship;
 /**
  * Represents the board for this battleship game.
- * @author Amanda, Joe, Jason, Matt, Erick
+ * @author Jasmin
+ * @author Joe
+ * @author Jason McDonald
+ * @author Matthew Weigel
+ * @author Erick Flores
  * @version 1.0
  */
 public class Board  extends Parent{
@@ -174,6 +178,12 @@ public class Board  extends Parent{
 		}
 	}
 	
+	/**
+	 * Returns a boolean value specifying if this cell is valid.
+	 * @param x An integer value specifying the x coordinate of this cell
+	 * @param y An integer value specifying the y coordinate of this cell
+	 * @return A boolean value specifying if this cell is valid
+	 */
 	public boolean isValid(int x, int y){
 		if(x >= 0 && x < 10 && y >= 0 && y < 10) {
 			return true;

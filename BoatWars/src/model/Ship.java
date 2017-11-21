@@ -1,7 +1,11 @@
 package model;
 /**
  * Represents a ship for this battleship game.
- * @author Amanda, Joe, Jason, Matt, Erick
+ * @author Jasmin
+ * @author Joe
+ * @author Jason McDonald
+ * @author Matthew Weigel
+ * @author Erick Flores
  * @version 1.0
  */
 public class Ship {

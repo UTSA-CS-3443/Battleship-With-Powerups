@@ -20,8 +20,11 @@ import model.Ship;
 
 /**
  * Represents the data and the rules that govern this battleship game.
- * 
- * @author Jazmin, Joe, Jason, Matt, Erick
+ * @author Jasmin
+ * @author Joe
+ * @author Jason McDonald
+ * @author Matthew Weigel
+ * @author Erick Flores
  * @version 1.0
  */
 public class MainController extends Application {
@@ -91,10 +94,29 @@ public class MainController extends Application {
 	 */
 	Label playerLabel = new Label("Player - Turn " + playerTurnNumber);
 	
+	/**
+	 * A boolean value specifying if the laser button is toggled.
+	 */
 	boolean laser = false;
+
+	/**
+	 * A boolean value specifying if the missile button is toggled.
+	 */
 	boolean missile = false;
+
+	/**
+	 * A boolean value specifying if the one shot button is toggled.
+	 */
 	boolean oneShot =  true;
+
+	/**
+	 * A boolean value specifying if the slash button is toggled.
+	 */
 	boolean slash = false;
+
+	/**
+	 * A boolean value specifying if the scatter bomb button is toggled.
+	 */
 	boolean scatter = false;
 
 	/**
@@ -135,30 +157,104 @@ public class MainController extends Application {
 			while (enemysTurn) {
 				int y = rand.nextInt(10);
 				int x = rand.nextInt(10);
-
+				boolean isVertical = true;
+				
 				Cell c = player.getCell(x, y);
-				if (c.shot) {
-					continue;
-				} 
-
-				if (c.takeShot()) {
-					enemysTurn = true;
-					if(!(c.getShip().alive())){
-						info.appendText("\nCRITICAL HIT!\nOne of your SHIPS have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
-						
-					}else{
-						info.appendText("\nOne of your SHIPS have been HIT!");
+//				if (c.shot) {
+//					continue;
+//				} 
+				if(laser) {
+					if((c.y + 1 > 10 || c.y - 1 < 0) && isVertical){
+						continue;
+					}else if((c.x + 1 > 10 || c.x - 1 < 0) && !isVertical){
+						continue;
 					}
-				} else {
-					enemyTurnNumber++;
-					enemyLabel.setText("Enemy - Turn " + enemyTurnNumber);
-					enemysTurn = false;
+					System.out.println("Laser" + enemyTurnNumber);
+					enemyDisplay(LaserButton.laser(c, isVertical));
 				}
-				if (player.getNumShips() == 0) {
+				
+				if(oneShot) {
+					if (c.shot) {
+						continue;
+					}
+					System.out.println("single" + enemyTurnNumber);
+					enemyDisplay(SingleShotButton.singleShot(c));
+				}
+				
+				if(slash){
+					if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+						continue;
+					}
+					System.out.println("Slash" + enemyTurnNumber);
+					enemyDisplay(SlashButton.slash(c, isVertical));
+				}
+				
+				if(scatter){
+					if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+						continue;
+					}
+					System.out.println("Scatter" + enemyTurnNumber);
+					enemyDisplay(ScatterBombButton.scatterBomb(c));
+				}
+				
+				if(missile){
+					if (c.y + 1 > 10 || c.y - 1 < 0 || c.x - 1 < 0 || c.x+1 > 10) {
+						continue;
+					}
+					System.out.println("Missile" + enemyTurnNumber);
+					enemyDisplay(MissileButton.missile(c));
+				}
+				
+				if (player.getNumShips() == 0 && !victory) {
 					// print loss screen or images
 					info.appendText("\n\n\n\t\t\t\tYou Lose!");
 					this.victory = true;
 				}
+				
+				if (!enemysTurn){
+					enemyTurnNumber++;
+					enemyLabel.setText("Enemy - Turn " + enemyTurnNumber);
+					enemysTurn = false;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Displays the specified information to the text box for the enemy.
+	 * @param sunkShip An integer value specifying which cells were already hit, hit, sunk, or missed.
+	 */
+	private void enemyDisplay(int sunkShip) {
+		enemysTurn = true;
+		if(sunkShip == 2) {
+			info.appendText("\nCRITICAL HIT!\nOne of your SHIPS have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
+		}else if (sunkShip == 1) {
+			info.appendText("\nOne of your SHIPS have been HIT!");
+		}
+		else {
+			enemysTurn = false;
+		}
+	}
+	
+	/**
+	 * Displays the specified information to the text box for the enemy.
+	 * @param sunkShips A reference to an integer array specifying which cells were already hit, hit, sunk, or missed.
+	 */
+	private void enemyDisplay(int[] sunkShips){
+		//0 = already hit, 1 = hit, 2 = sunk, 3 = miss
+		enemysTurn = true;
+		for(int i = 0; i < sunkShips.length; i++){
+			if(sunkShips[i] > 0){
+				enemysTurn = false;
+			}
+		}
+		for(int i = 0; i < sunkShips.length; i++){
+			if(sunkShips[i] == 2) {
+				enemysTurn = true;
+				info.appendText("\nCRITICAL HIT!\nOne of your SHIPS have been SUNK! \n\nYou have " + player.getNumShips() + " ship(s) REMAINING!\n");
+			}else if (sunkShips[i] == 1) {
+				enemysTurn = true;
+				info.appendText("\nOne of your SHIPS have been HIT!");
 			}
 		}
 	}
@@ -166,8 +262,7 @@ public class MainController extends Application {
 	/**
 	 * Sets up the buttons
 	 * 
-	 * @param root
-	 *            A reference to the pane that this component is placed within
+	 * @param root A reference to the pane that this component is placed within
 	 */
 	public void setButtons(BorderPane root) {
 		VBox box = new VBox();
@@ -257,11 +352,8 @@ public class MainController extends Application {
 	}
 
 	/**
-	 * 
-	 * Creates the BoatWars game.
-	 * 
-	 * @return Returns the pane that this game is component is placed within
-	 * 
+	 * Displays the specified information to the text box for the player.
+	 * @param sunkShip An integer value specifying which cells were already hit, hit, sunk, or missed.
 	 */
 	private void display(int sunkShip) {
 		enemysTurn = false;
@@ -276,6 +368,10 @@ public class MainController extends Application {
 		}
 	}
 	
+	/**
+	 * Displays the specified information to the text box for the player.
+	 * @param sunkShips A reference to an integer array specifying which cells were already hit, hit, sunk, or missed.
+	 */
 	private void display(int[] sunkShips){
 		//0 = already hit, 1 = hit, 2 = sunk, 3 = miss
 		enemysTurn = false;
@@ -296,6 +392,10 @@ public class MainController extends Application {
 		}
 	}
 	
+	/**
+	 * Shoots the enemy board.
+	 * @param event A reference to the mouse event specifying the location to be shot
+	 */
 	public void shoot(MouseEvent event) {
 		if (!victory) {
 			if (!run)
@@ -353,6 +453,10 @@ public class MainController extends Application {
 		}
 	}
 	
+	/**
+	 * Places the player's ships.
+	 * @param event A reference to the mouse event specifying the location of the new ship
+	 */
 	public void placeShips(MouseEvent event) {
 		if (run)
 			return;
@@ -362,6 +466,11 @@ public class MainController extends Application {
 				gameStart();
 			}
 	}
+	
+	/**
+	 * Creates this Boat wars game.
+	 * @return A reference to the parent root for this application
+	 */
 	public Parent create() {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(800, 800);

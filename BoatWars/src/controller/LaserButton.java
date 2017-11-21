@@ -4,10 +4,20 @@ import view.Cell;
 
 /**
  * Represents a laser button.
- * @author Amanda, Joe, Jason, Matt, Erick
+ * @author Jasmin
+ * @author Joe
+ * @author Jason McDonald
+ * @author Matthew Weigel
+ * @author Erick Flores
  * @version 1.0
  */
 public class LaserButton {
+	/**
+	 * Shoots the board with a laser.
+	 * @param c A reference to the initial cell to be shot
+	 * @param isVertical A boolean value specifying if this laser is vertical or horizontal
+	 * @return A reference to an integer array specifying which cells were already hit, hit, sunk, or missed.
+	 */
 	public static int[] laser(Cell c, boolean isVertical) {
 		boolean isValid = true;
 		Cell[] cells = new Cell[3];

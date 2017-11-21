@@ -1,8 +1,22 @@
 package controller;
 
 import view.Cell;
-
+/**
+ * Represents a slash button.
+ * @author Jasmin
+ * @author Joe
+ * @author Jason McDonald
+ * @author Matthew Weigel
+ * @author Erick Flores
+ * @version 1.0
+ */
 public class SlashButton {
+	/**
+	 * Shoots the board with a slash bomb.
+	 * @param c A reference to the initial cell to be shot
+	 * @param isVertical A boolean value specifying if this slash is vertically or horizontally oriented
+	 * @return A reference to an integer array specifying which cells were already hit, hit, sunk, or missed.
+	 */
 	public static int[] slash(Cell c, boolean isVertical) {
 		boolean isValid = true;
 		Cell[] cells = new Cell[3];
