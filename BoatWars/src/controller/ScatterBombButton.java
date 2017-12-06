@@ -4,7 +4,7 @@ import view.Cell;
 /**
  * Represents a scatter bomb button.
  * @author Miguel Perez
- * @author Jasmin
+ * @author Jasmin Ramirez
  * @author Jason McDonald
  * @author Matthew Weigel
  * @author Erick Flores
