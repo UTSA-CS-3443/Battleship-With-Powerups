@@ -5,7 +5,6 @@ import view.Cell;
  * Represents a slash button.
  * @author Miguel Perez
  * @author Jasmin
- * @author Joe
  * @author Jason McDonald
  * @author Matthew Weigel
  * @author Erick Flores

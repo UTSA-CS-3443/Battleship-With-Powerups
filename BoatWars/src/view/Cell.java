@@ -8,7 +8,6 @@ import model.Ship;
  * Represents a cell on the board for this battleship game.
  * @author Miguel Perez
  * @author Jasmin
- * @author Joe
  * @author Jason McDonald
  * @author Matthew Weigel
  * @author Erick Flores

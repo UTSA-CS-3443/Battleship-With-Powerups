@@ -6,7 +6,6 @@ import view.Cell;
  * Represents a laser button.
  * @author Miguel Perez
  * @author Jasmin
- * @author Joe
  * @author Jason McDonald
  * @author Matthew Weigel
  * @author Erick Flores
