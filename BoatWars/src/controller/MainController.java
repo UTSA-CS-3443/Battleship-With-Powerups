@@ -32,108 +32,108 @@ public class MainController extends Application {
 	/**
 	 * A boolean value specifying if this turn is the enemy's turn.
 	 */
-	boolean isEnemyTurn = false;
+	private boolean isEnemyTurn = false;
 
 	/**
 	 * If true, the game is currently running. If false, both players are currently
 	 * placing ships.
 	 */
-	boolean run = false;
+	private boolean run = false;
 
 	/**
 	 * A reference to the board that the player is using.
 	 */
-	Board player;
+	private Board player;
 
 	/**
 	 * A reference to the board that the enemy is using.
 	 */
-	Board enemy;
+	private Board enemy;
 
 	/**
 	 * An integer value specifying the amount of allowed ships.
 	 */
-	int allowedShips = 4;
+	private int allowedShips = 4;
 
 	/**
 	 * A reference to a pseudo-random number generator.
 	 */
-	Random rand = new Random();
+	private Random rand = new Random();
 
 	/**
 	 * A boolean value specifying if it is the enemy's turn.
 	 */
-	boolean enemysTurn = false;
+	private boolean enemysTurn = false;
 
 	/**
 	 * A boolean value specifying if either player has won this game.
 	 */
-	boolean victory = false;
+	private boolean victory = false;
 
 	/**
 	 * A reference to the text area that displays the desired information.
 	 */
-	TextArea info = new TextArea();// added text area
+	private TextArea info = new TextArea();// added text area
 
 	/**
 	 * An integer value specifying the enemy's turn.
 	 */
-	int enemyTurnNumber = 0;
+	private int enemyTurnNumber = 0;
 
 	/**
 	 * An integer value specifying the players turn.
 	 */
-	int playerTurnNumber = 0;
+	private int playerTurnNumber = 0;
 
 	/**
 	 * A label for enemy board.
 	 */
-	Label enemyLabel = new Label("Enemy - Turn " + enemyTurnNumber);
+	private Label enemyLabel = new Label("Enemy - Turn " + enemyTurnNumber);
 
 	/**
 	 * A label for the player board.
 	 */
-	Label playerLabel = new Label("Player - Turn " + playerTurnNumber);
+	private Label playerLabel = new Label("Player - Turn " + playerTurnNumber);
 	
 	/**
 	 * A boolean value specifying if the laser button is toggled.
 	 */
-	boolean laser = false;
+	private boolean laser = false;
 
 	/**
 	 * A boolean value specifying if the missile button is toggled.
 	 */
-	boolean missile = false;
+	private boolean missile = false;
 
 	/**
 	 * A boolean value specifying if the one shot button is toggled.
 	 */
-	boolean oneShot =  true;
+	private boolean oneShot =  true;
 
 	/**
 	 * A boolean value specifying if the slash button is toggled.
 	 */
-	boolean slash = false;
+	private boolean slash = false;
 	
 	/**
 	 * A boolean value specifying if the scatter bomb button is toggled.
 	 */
-	boolean scatter = false;
+	private boolean scatter = false;
 
 	/**
 	 * A boolean value specifying if the nuke button is toggled.
 	 */
-	boolean nuke = false;
+	private boolean nuke = false;
 
 	/**
 	 * A boolean value specifying if the x button is toggled.
 	 */
-	boolean xBomb = false;
+	private boolean xBomb = false;
 
 	/**
 	 * A boolean value specifying if the donut button is toggled.
 	 */
-	boolean donut = false;
+	private boolean donut = false;
 
 	/**
 	 * Sets the default message at the start of this game.
@@ -345,16 +345,7 @@ public class MainController extends Application {
 		Button donutButton = new Button("Donut");
 		donutButton.setOnAction(e->{laser = false; oneShot = false; missile = false; slash= false; scatter = false; nuke = false; xBomb = false; donut = true;});
 		
-		Button scoreboardButton = new Button("View Scoreboard");
-		Button restartButton = new Button("Restart");
-
 		Button exitButton = new Button("Exit");
-		restartButton.setOnAction(e -> {
-			this.restart();
-		});
-		scoreboardButton.setOnAction(e -> {
-			this.showScoreboard();
-		});
 		exitButton.setOnAction(e -> {
 			this.exit(primaryStage);
 		});
@@ -366,8 +357,6 @@ public class MainController extends Application {
 		row3.getChildren().add(xButton);
 		row4.getChildren().add(donutButton);
 		row4.getChildren().add(nukeButton);
-		row5.getChildren().add(scoreboardButton);
-		row5.getChildren().add(restartButton);
 		row5.getChildren().add(exitButton);
 		
 		info = new TextArea();
@@ -379,21 +368,6 @@ public class MainController extends Application {
 		box.setPadding(new Insets(10, 10, 10, 10));
 		box.getChildren().addAll(label, row1, row2, row3, row4, label2, info, label3, row5);
 		root.setLeft(box);
-	}
-
-	/**
-	 * Restarts this application.
-	 */
-	public void restart() {
-		// TODO this method
-
-	}
-
-	/**
-	 * Displays score board.
-	 */
-	private void showScoreboard() {
-		// TODO this method
 	}
 
 	/**
